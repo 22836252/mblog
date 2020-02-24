@@ -32,10 +32,15 @@ def showpost(request, slug):
 
 
 def category(request):
-    template = get_template('category.html')  
-    productslist = products.objects.all()
-    html = template.render(locals())
-    return HttpResponse(html)
+    
+    productslist = products.objects.all()  
+
+    if 'name' in request.session:
+        name = request.session['name']
+    return render(request, 'category.html', locals())
+    
+    
+    return render(request, 'category.html', locals())
 
 def register(request):
     template = get_template('register.html')  
@@ -50,36 +55,40 @@ def login(request):
     return HttpResponse(html)
 @csrf_exempt
 def registerinfo(request):  
-    name = request.Account['name']
-    password=request.Account['password']
+    name = request.POST['name']
+    password=request.POST['password']
+    email=request.POST['email']
     try:
-        checkAccount=models.Account.objects.get(name=name)
+        checkAccount=models.Account.objects.get(email=email)
 
         if checkAccount!= None:
             mess = "帳號重複!"
         return render(request, 'register.html', locals())
     except:
        
-        if request.method == "Post":       
+        if request.method == "POST":       
         
-            Account = models.Account.objects.create(name=name, password=password) 
+            Account = models.Account.objects.create(name=name, password=password, email=email) 
             Account.save()         
             mess = "更新成功!"
-            return render(request, 'register.html', locals())
+            return render(request, 'index.html', locals())
         else:
             mess = "表單資料不齊全!"
         return render(request, 'register.html', locals())
 
 @csrf_exempt
 def loginCheck(request):  
-    name = request.Account['name']
-    password=request.Account['password']
+    email=request.POST['email']
+    password=request.POST['password']
+    
     try:
-        checkAccount=models.Account.objects.get(name=name, password=password)
-        
-        if checkAccount!= None:
-           
-            return render(request, 'base.html', locals())
+        checkAccount=models.Account.objects.get(email=email, password=password)
+    
+        if checkAccount!= None:     
+            name=checkAccount.name
+            
+            request.session['name'] = name
+            return render(request, 'index.html', locals())
     except:
         mess = "帳號或是密碼輸入失敗!"
        
