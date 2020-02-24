@@ -1,0 +1,102 @@
+<!-- base.html -->
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>{% block title %} {% endblock %}</title>
+    <!-- Latest compiled and minified CSS -->
+
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-
+1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstraptheme.min.css"
+        integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-
+0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="e-commerce site well design with responsive view." />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="/static/css/stylesheet.css" rel="stylesheet">
+    <link href="/static/css/responsive.css" rel="stylesheet">
+    <link href="/static/owl-carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="/static/owl-carousel/owl.transitions.css" type="text/css" rel="stylesheet" media="screen" />
+    <script src="/static/javascript/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/static/javascript/jstree.min.js" type="text/javascript"></script>
+    <script src="/static/javascript/template.js" type="text/javascript"></script>
+    <script src="/static/javascript/common.js" type="text/javascript"></script>
+    <script src="/static/javascript/global.js" type="text/javascript"></script>
+    <script src="/static/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+
+    <div class='container-fluid'>
+        {% include 'header.html' %}
+        <div class='row'>
+            <div class='col-sm-2 col-md-2'>
+                <div class='panel panel-default'>
+                    <div class='panel-heading'>
+                        <h3>MENU</h3>
+                    </div>
+
+                    <div class='panel-body'>
+                        <div class='list-group'>
+                            <a href='/' class='list-group-item'>HOME</a>
+                            <a href='/admin' class='list-group-item'>管理頁面 </a>
+                            <a href='http://tar.so/news' class='list-group-item'>實時新聞</a>
+                            <a href='http://drho.tw/news' class='list-group-item'>電視新聞</a>
+                        </div>
+                        <script type="text/javascript" src="http://feedjit.com/serve/?vv=1515&amp;tft=3&amp;dd=0&amp;wid=&amp;p
+id=0&amp;proid=0&amp;bc=FFFFFF&amp;tc=000000&amp;brd1=012B6B&amp;lnk=135
+D9E&amp;hc=FFFFFF&amp;hfc=2853A8&amp;btn=C99700&amp;ww=190&amp;wne=6&amp
+;srefs=0"></script><noscript><a href="http://feedjit.com/">Live Traffic
+                                Stats</a></noscript>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-8 col-md-8'>
+                <div class='panel-body'>
+                    {% include 'mainbanner.html' %}
+        
+                </div>
+                <!-- <div class='panel panel-default'> -->
+                    <!-- <div class='panel-heading'>
+                        {% block headmessage %} {% endblock %}
+                    </div>
+                    <div class='panel-body'>
+                        {% block content %} {% endblock %}
+                    </div> -->
+                    
+            </div>
+           
+            </div>
+        </div>
+    </div>
+    
+        <div class='panel-body'>
+            {% include 'content.html' %}
+
+        </div>
+        <div class='panel-footer'>
+            {% include 'footer.html' %}
+
+        </div>
+   
+</body>
+
+</html>

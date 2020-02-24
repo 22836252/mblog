@@ -1,0 +1,12 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Home Page</title>
+</head>
+<body>
+{% url 'post-url2' yr mon day post_num %}
+<a href='{% url 'list-url' yr mon day %}'>同一時間的欄位</a>
+</body>
+</html>

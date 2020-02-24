@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% block title %} 歡迎光臨我要賣東西小站-首頁 {% endblock %}
+
+
+{% block headmessage %}
+<h3 style='font-family:標楷體;'>本站文章列表
+    
+     
+        <img height='200px' src="https://tw.portal-pokemon.com/play/resources/pokedex/img/pm/ecdc5527d67488c92c242e34458844fe2afac525.png">
+{% endblock %}
+{% block content %}
+{% for products in productslist %}
+<p style='font-family:微軟正黑體;font-size:14pt;font-weight:bold;'>
+<a href='/products/{{products.slug}}'>{{ productslist.title }}</a>
+
+</p>
+{% endfor %}
+{% endblock %}
+
+
