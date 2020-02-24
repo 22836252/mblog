@@ -1,101 +1,355 @@
+<!-- base.html -->
 <!DOCTYPE html>
 
-<html lang="en">
+<html>
+
 <head>
-<title>Elegant Flora</title><meta http-equiv="content-type" content="text/html;charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="e-commerce site well design with responsive view." />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
-<link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-<link href="/static/css/stylesheet.css" rel="stylesheet">
-<link href="/static/css/responsive.css" rel="stylesheet">
-<link href="/static/owl-carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
-<link href="/static/owl-carousel/owl.transitions.css" type="text/css" rel="stylesheet" media="screen" />
-<script src="/static/javascript/jquery-2.1.1.min.js" type="text/javascript"></script>
-<script src="/static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="/static/javascript/jstree.min.js"></script>
-<script type="text/javascript" src="/static/javascript/template.js"></script>
-<script src="/static/javascript/common.js" type="text/javascript"></script>
-<script src="/static/javascript/global.js" type="text/javascript"></script>
-<script src="/static/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
+    <meta charset='utf-8'>
+    <title>{% block title %} {% endblock %}</title>
+    <!-- Latest compiled and minified CSS -->
+
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-
+1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstraptheme.min.css"
+        integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-
+0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="e-commerce site well design with responsive view." />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="/static/css/stylesheet.css" rel="stylesheet">
+    <link href="/static/css/responsive.css" rel="stylesheet">
+    <link href="/static/owl-carousel/owl.carousel.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="/static/owl-carousel/owl.transitions.css" type="text/css" rel="stylesheet" media="screen" />
+    <script src="/static/javascript/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/static/javascript/jstree.min.js" type="text/javascript"></script>
+    <script src="/static/javascript/template.js" type="text/javascript"></script>
+    <script src="javascript/common.js" type="text/javascript"></script>
+    <script src="/static/javascript/global.js" type="text/javascript"></script>
+    <script src="/static/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
+
 </head>
-<body class="account-register col-2">
-<div class="preloader loader" style="display: block; background:#f2f2f2;"> <img src="/static/image/loader.gif"  alt="#"/></div>
-<div class='container-fluid'>
-  {% include 'header.html' %}
-</div>
+
+<body>
+
+
+    <div class='container-fluid'>
+        {% include 'header.html' %}
+        {% load markdown_deux_tags %}
+        <div class='row'>
 <div class="container">
-
-    <ul class="breadcrumb">
-        <li><a href="index.html"><i class="fa fa-home"></i></a></li>
-        <li><a href="#">Account</a></li>
-        <li><a href="register.html">Register</a></li>
-    </ul>
-    <div class="row">
-        <div class="col-sm-3 hidden-xs column-left" id="column-left">
-            <div class="column-block">
-                <div class="columnblock-title">Account</div>
-                <div class="account-block">
-                    <div class="list-group"> <a class="list-group-item" href="login.html">Login</a> <a class="list-group-item" href="register.html">Register</a> <a class="list-group-item" href="forgetpassword.html">Forgotten Password</a> <a class="list-group-item" href="#">My Account</a> <a class="list-group-item" href="#">Address Book</a> <a class="list-group-item" href="#">Wish List</a> <a class="list-group-item" href="#">Order History</a> <a class="list-group-item" href="download">Downloads</a> <a class="list-group-item" href="#">Reward Points</a> <a class="list-group-item" href="#">Returns</a> <a class="list-group-item" href="#">Transactions</a> <a class="list-group-item" href="#">Newsletter</a><a class="list-group-item last" href="#">Recurring payments</a> </div>
-                </div>
+  <ul class="breadcrumb">
+    <li><a href="index.html"><i class="fa fa-home"></i></a></li>
+    <li><a href="category.html">Electronics</a></li>
+  </ul>
+  <div class="row">
+    <div id="column-left" class="col-sm-3 hidden-xs column-left">
+      <div class="column-block">
+        <div class="columnblock-title">Categories</div>
+        <div class="category_block">
+          <ul class="box-category treeview-list treeview">
+            <li><a href="#" class="activSub">Desktops</a>
+              <ul>
+                <li><a href="#">PC</a></li>
+                <li><a href="#">MAC</a></li>
+              </ul>
+            </li>
+            <li><a href="#" class="activSub">Laptops &amp; Notebooks</a>
+              <ul>
+                <li><a href="#">Macs</a></li>
+                <li><a href="#">Windows</a></li>
+              </ul>
+            </li>
+            <li><a href="#" class="activSub">Components</a>
+              <ul>
+                <li><a href="#">Mice and Trackballs</a></li>
+                <li><a href="#" class="activSub" >Monitors</a>
+                  <ul>
+                    <li><a href="#"  >test 1</a></li>
+                    <li><a href="#"  >test 2</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">Windows</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Tablets</a></li>
+            <li><a href="#">Software</a></li>
+            <li><a href="#">Phones & PDAs</a></li>
+            <li><a href="#">Cameras</a></li>
+            <li><a href="#">MP3 Players</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel panel-default filter">
+        <div class="panel-heading columnblock-title">Refine Search</div>
+        <div class="filter-block">
+          <div class="list-group"> <a class="list-group-item">Color</a>
+            <div class="list-group-item">
+              <div id="filter-group1">
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="1" />
+                  Black (7)</label>
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="2" />
+                  Blue (6)</label>
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="3" />
+                  Red (6)</label>
+              </div>
             </div>
+            <a class="list-group-item">Price</a>
+            <div class="list-group-item">
+              <div id="filter-group2">
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="4" />
+                  $100-$300 (6)</label>
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="5" />
+                  $301-$1000 (6)</label>
+              </div>
+            </div>
+            <a class="list-group-item">Size</a>
+            <div class="list-group-item">
+              <div id="filter-group3">
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="6" />
+                  Big (3)</label>
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="7" />
+                  Medium (3)</label>
+                <label class="checkbox">
+                  <input name="filter[]" type="checkbox" value="8" />
+                  Small (1)</label>
+              </div>
+            </div>
+          </div>
+          <div class="panel-footer text-right">
+            <button type="button" id="button-filter" class="btn btn-primary">Refine Search</button>
+          </div>
         </div>
-        <div class="col-sm-9" id="content">
-            <h1>Register Account</h1>
-            <p>If you already have an account with us, please login at the <a href="login">login page</a>.</p>
-            
-            
-            {% block content %}
-            <form class="form-horizontal" method="post" action="/registerinfo/" name="form1"> 
-                {% csrf_token %}
-                <fieldset id="account">
-                    <legend>Your Personal Details</legend>
-                    <div style="display: none;" class="form-group required">
-                        <label class="col-sm-2 control-label">Customer Group</label>
-                        <div class="col-sm-10">
-                            <div class="radio">
-                              
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group required">
-                        <label for="input-firstname" class="col-sm-2 control-label"> Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="input-firstname" placeholder="First Name" value="" name="name"">
-                        </div>
-                    </div>
-                  
-                    <div class="form-group required">
-                        <label for="input-password" class="col-sm-2 control-label">Password</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="input-password" placeholder="Password" value="" name="password">
-                        </div>
-                    </div>
-                   
-                </fieldset>
-           
-                <div class="buttons">
-                    <div class="pull-right">I have read and agree to the <a class="agree" href="#"><b>Privacy Policy</b></a>
-                        <input type="checkbox" value="1" name="agree">
-                        &nbsp;
-                        <input type="submit" class="btn btn-primary" value="Continue">
-                    </div>
-                </div>
-            </form>
+      </div>
+      <div class="banner" >
+        <div class="item"> <a href="#"><img src="/static/image/banners/banner1.jpg" alt="Left Banner" class="img-responsive" /></a> </div>
+      </div>
+      <h3 class="productblock-title">Specials</h3>
+      <div class="row special-grid product-grid">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 product-grid-item">
+          <div class="product-thumb transition">
+            <div class="image product-imageblock"> <a href="#"><img src="/static/image/product/5product50x59.jpg" alt="women's New Wine is an alcoholic" title="women's New Wine is an alcoholic" class="img-responsive" /></a>
+              <div class="button-group">
+                <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+                <button type="button" class="addtocart-btn" >Add to Cart</button>
+                <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+              </div>
+            </div>
+            <div class="caption product-detail">
+              <h4 class="product-name"> <a href="product.html" title="women's New Wine is an alcoholic">New Wine is an alcoholic</a> </h4>
+              <p class="price product-price"> <span class="price-new">$254.00</span><span class="price-tax">Ex Tax: $210.00</span> </p>
+            </div>
+            <div class="button-group">
+              <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+              <button type="button" class="addtocart-btn" >Add to Cart</button>
+              <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+            </div>
+          </div>
         </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 product-grid-item">
+          <div class="product-thumb transition">
+            <div class="image product-imageblock"> <a href="#"><img src="image/product/1product50x59.jpg" alt="women's New Wine is an alcoholic" title="women's New Wine is an alcoholic" class="img-responsive" /></a>
+              <div class="button-group">
+                <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+                <button type="button" class="addtocart-btn" >Add to Cart</button>
+                <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+              </div>
+            </div>
+            <div class="caption product-detail">
+              <h4 class="product-name"> <a href="product.html" title="women's New Wine is an alcoholic">New Wine is an alcoholic</a> </h4>
+              <p class="price product-price"> <span class="price-new">$254.00</span><span class="price-tax">Ex Tax: $210.00</span> </p>
+            </div>
+            <div class="button-group">
+              <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+              <button type="button" class="addtocart-btn" >Add to Cart</button>
+              <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 product-grid-item">
+          <div class="product-thumb transition">
+            <div class="image product-imageblock"> <a href="#"><img src="image/product/4product50x59.jpg" alt="women's New Wine is an alcoholic" title="women's New Wine is an alcoholic" class="img-responsive" /></a>
+              <div class="button-group">
+                <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+                <button type="button" class="addtocart-btn" >Add to Cart</button>
+                <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+              </div>
+            </div>
+            <div class="caption product-detail">
+              <h4 class="product-name"> <a href="product.html" title="women's New Wine is an alcoholic">New Wine is an alcoholic</a> </h4>
+              <p class="price product-price"> <span class="price-new">$254.00</span><span class="price-tax">Ex Tax: $210.00</span> </p>
+            </div>
+            <div class="button-group">
+              <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
+              <button type="button" class="addtocart-btn" >Add to Cart</button>
+              <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-<div>接收到的資料：{{mess}}</div>
-{% endblock %}
-
-<div class='panel-footer'>
-  {% include 'footer.html' %}
-
-</div>
+    <div id="content" class="col-sm-9">
+      <h2 class="category-title">產品</h2>
+     
+      <div class="category-page-wrapper">
+        <div class="col-md-6 list-grid-wrapper">
+          <div class="btn-group btn-list-grid">
+            <button type="button" id="list-view" class="btn btn-default list" data-toggle="tooltip" title="List"><i class="fa fa-th-list"></i></button>
+            <button type="button" id="grid-view" class="btn btn-default grid" data-toggle="tooltip" title="Grid"><i class="fa fa-th"></i></button>
+          </div>
+          <a href="#" id="compare-total">Product Compare (0)</a> </div>
+        <div class="col-md-1 text-right page-wrapper">
+          <label class="control-label" for="input-limit">Show :</label>
+          <div class="limit">
+            <select id="input-limit" class="form-control">
+              <option value="8" selected="selected">8</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="75">75</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2 text-right sort-wrapper">
+          <label class="control-label" for="input-sort">Sort By :</label>
+          <div class="sort-inner">
+            <select id="input-sort" class="form-control">
+              <option value="ASC" selected="selected">Default</option>
+              <option value="ASC">Name (A - Z)</option>
+              <option value="DESC">Name (Z - A)</option>
+              <option value="ASC">Price (Low &gt; High)</option>
+              <option value="DESC">Price (High &gt; Low)</option>
+              <option value="DESC">Rating (Highest)</option>
+              <option value="ASC">Rating (Lowest)</option>
+              <option value="ASC">Model (A - Z)</option>
+              <option value="DESC">Model (Z - A)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="grid-list-wrapper">
+        
+        <div class="col-sm-9" id="content">
+            <h1>Shopping Cart                &nbsp;(10.00kg) </h1>
+            <form enctype="multipart/form-data" method="post" action="#">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <td class="text-center">Image</td>
+                      <td class="text-left">Product Name</td>
+                      <td class="text-left">Model</td>
+                      <td class="text-left">Quantity</td>
+                      <td class="text-right">Unit Price</td>
+                      <td class="text-right">Total</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="women's New Wine is an alcoholic" alt="women's New Wine is an alcoholic" src="image/product/2product50x59.jpg"></a></td>
+                      <td class="text-left"><a href="product.html">women's New Wine is an alcoholic</a></td>
+                      <td class="text-left">product 11</td>
+                      <td class="text-left"><div style="max-width: 200px;" class="input-group btn-block">
+                          <input type="text" class="form-control quantity" size="1" value="1" name="quantity">
+                          <span class="input-group-btn">
+                          <button class="btn btn-primary" title="" data-toggle="tooltip" type="submit" data-original-title="Update"><i class="fa fa-refresh"></i></button>
+                          <button  class="btn btn-danger" title="" data-toggle="tooltip" type="button" data-original-title="Remove"><i class="fa fa-times-circle"></i></button>
+                          </span></div></td>
+                      <td class="text-right">$254.00</td>
+                      <td class="text-right">$254.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+            <h2>What would you like to do next?</h2>
+            <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+            <div id="accordion" class="panel-group">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title"><a data-parent="#accordion" data-toggle="collapse" class="accordion-toggle" href="#collapse-coupon">Use Coupon Code <i class="fa fa-caret-down"></i></a></h4>
+                </div>
+                <div class="panel-collapse collapse" id="collapse-coupon">
+                  <div class="panel-body">
+                    <label for="input-coupon" class="col-sm-3 control-label">Enter your coupon here</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="input-coupon" placeholder="Enter your coupon here" value="" name="coupon">
+                      <span class="input-group-btn">
+                      <input type="button" class="btn btn-primary" data-loading-text="Loading..." id="button-coupon" value="Apply Coupon">
+                      </span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title"><a class="accordion-toggle" data-parent="#accordion" data-toggle="collapse" href="#collapse-voucher">Use Gift Voucher <i class="fa fa-caret-down"></i></a></h4>
+                </div>
+                <div class="panel-collapse collapse" id="collapse-voucher">
+                  <div class="panel-body">
+                    <label for="input-voucher" class="col-sm-3 control-label">Enter your gift voucher code here</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="input-voucher" placeholder="Enter your gift voucher code here" value="" name="voucher">
+                      <span class="input-group-btn">
+                      <input type="submit" class="btn btn-primary" data-loading-text="Loading..." id="button-voucher" value="Apply Voucher">
+                      </span> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                
+                
+            <br>
+            <div class="row">
+              <div class="col-sm-4 col-sm-offset-8">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td class="text-right"><strong>Sub-Total:</strong></td>
+                      <td class="text-right">$210.00</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right"><strong>Eco Tax (-2.00):</strong></td>
+                      <td class="text-right">$2.00</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right"><strong>VAT (20%):</strong></td>
+                      <td class="text-right">$42.00</td>
+                    </tr>
+                    <tr>
+                      <td class="text-right"><strong>Total:</strong></td>
+                      <td class="text-right">$254.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="buttons">
+              <div class="pull-left"><a class="btn btn-default" href="index.html">Continue Shopping</a></div>
+              <div class="pull-right"><a class="btn btn-primary" href="checkout.html">Checkout</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
 </body>
 

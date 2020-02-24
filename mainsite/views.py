@@ -161,3 +161,13 @@ def post2(request, yr, mon, day, post_num):
     return render(request, 'post2.html', locals()) 
 
 
+def shippingcart(request):
+
+    try:
+        if request!= None:  
+            email=request.POST['email']
+            product=request.POST['product']
+        return render(request, 'shippingcart.html', locals())    
+    except:
+    
+        return render(request, 'shippingcart.html', locals()) 

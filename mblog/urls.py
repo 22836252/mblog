@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting
+from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shippingcart
 from django.urls import reverse
 
 
@@ -43,7 +43,8 @@ urlpatterns = [
     path('aboutpage/<int:author_no>', aboutpage),
     path('aboutpage/', aboutpage),
     path('info/', include(my_patterns)),
-
+    path('shippingcart/', shippingcart),
+    
     path('testpage/', testpage),  
     path('showlist/<int:yr>/<int:mon>/<int:day>/', showlisting),
     path('post/<int:yr>/<int:mon>/<int:day>/<int:post_num>/', post, name='post-url'),
@@ -52,14 +53,5 @@ urlpatterns = [
 
     path('showlist/<int:yr>/<int:mon>/<int:day>/',showlisting, name='list-url'),
 
-    # path('post1/',views.post1),  #資料新增，資料不驗證
-    # path('post2/',views.post2),  #資料新增，資料作驗證
-
-    # re_path(r'delete/(\d+)/$',views.delete),
-
-    # re_path(r'edit/(\d+)/$',views.edit),
-    # re_path(r'edit/(\d+)/(\w+)$',views.edit),  #由 瀏覽器開啟
-    # re_path(r'edit2/(\d+)/(\w+)$',views.edit2),
-
-    # path('postform',views.postform),    #表單驗證
+ 
 ]
