@@ -39,24 +39,27 @@
     <!-- <script src="static/javascript/postdata.js" type="text/javascript"></script> -->
     <script src="static/javascript/global.js" type="text/javascript"></script>
     <script src="static/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
+
+
   <script>
-    function Postdata(val){
-    
-
+    function Postdata(val){  
     $("button").click(function() {
-      
           var sku=this.id;
-          
-   
-      var xhr = new XMLHttpRequest();
-      xhr.open('post','http://127.0.0.1:8000/addtocart/',true); 
-      xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'),"application/x-www-form-urlencoded");
-      
-      var data = JSON.stringify({ "sku": sku});
-      xhr.send(data);
-      console.log('傳送資料 ' + data)
+       
 
-      alert(data)
+    $.ajax({
+      url: '/addtocart/',
+      type: 'POST',
+      dataType: 'json',
+      data:{
+            sku:sku           
+        },
+        success: function (data) { 
+          alert(data.message)
+                },
+        error:function(xhr){
+          alert("發生錯誤: " + xhr.status + " " + xhr.statusText);}
+    });
 
 
       xhr.onload = function() {

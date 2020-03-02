@@ -7,12 +7,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from .models import products
 from .models import Account
+from .models import Cart
 from django.http import Http404
 import random
 from django.urls import reverse
+from django.contrib import messages
+from django.http import JsonResponse
 
-
-# Create your views here.
 def homepage(request):
     template = get_template('index.html')
     productslist = products.objects.all()
@@ -160,25 +161,34 @@ def shippingcart(request):
 def addtocart(request):  
     name = request.session['name']
     email= request.session['email']
-    if request.is_ajax():
-        if request.method == 'POST':
-            json_data = json.loads(request.body)
-            sku = json_data['sku']
-    print(name+email+sku)
+    response_data = {}
+    sku = request.POST['sku']
+   
+    checkAccount=models.Account.objects.get(email=email)    
+ 
+    if sku != None:
+        productlists = products.objects.get(sku=sku)
+        if productlists.qty<0:
+           return JsonResponse({'status':'fail','message':'庫存數不夠'})
+        try:
+            listcheck=models.Cart.objects.get(productName=productlists.name, productPrice=productlists.price, BuyerName=name)
+            print(listcheck)
+            if listcheck!=None:    
+                listcheck.qty=listcheck.qty+1
+                return JsonResponse({'status':'success','message':productlists.name+'已加入購物車'})
+        except:
+
+            Cart = models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name) 
+            Cart.save()
+        return JsonResponse({'status':'success','message':productlists.name+'已加入購物車'})
+        
+    else:
+        return JsonResponse({'status':'fail','message':'沒庫存'})
     
-    try:   
-        checkAccount=models.Account.objects.get(email=email)
-        if checkAccount!= None and sku != None:
+    
+    
+    
 
-            jsonresult = products.objects.get(sku=sku)
-            print(jsonresult)
-        return HttpResponse(jsonresult, content_type="application/json")
-
-       
-    except:
-        jsonresult = "帳號或是密碼輸入失敗!"
-        print(jsonresult)
-        return HttpResponse(jsonresult, content_type="application/json")
 
 @csrf_exempt
 def loginCheck(request):  
