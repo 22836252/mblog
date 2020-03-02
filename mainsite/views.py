@@ -76,23 +76,7 @@ def registerinfo(request):
             mess = "表單資料不齊全!"
         return render(request, 'register.html', locals())
 
-@csrf_exempt
-def loginCheck(request):  
-    email=request.POST['email']
-    password=request.POST['password']
-    
-    try:
-        checkAccount=models.Account.objects.get(email=email, password=password)
-    
-        if checkAccount!= None:     
-            name=checkAccount.name
-            
-            request.session['name'] = name
-            return render(request, 'index.html', locals())
-    except:
-        mess = "帳號或是密碼輸入失敗!"
-       
-        return render(request, 'login.html', locals())
+
 
 
 def about(request):
@@ -171,3 +155,46 @@ def shippingcart(request):
     except:
     
         return render(request, 'shippingcart.html', locals()) 
+    
+@csrf_exempt
+def addtocart(request):  
+    name = request.session['name']
+    email= request.session['email']
+    if request.is_ajax():
+        if request.method == 'POST':
+            json_data = json.loads(request.body)
+            sku = json_data['sku']
+    print(name+email+sku)
+    
+    try:   
+        checkAccount=models.Account.objects.get(email=email)
+        if checkAccount!= None and sku != None:
+
+            jsonresult = products.objects.get(sku=sku)
+            print(jsonresult)
+        return HttpResponse(jsonresult, content_type="application/json")
+
+       
+    except:
+        jsonresult = "帳號或是密碼輸入失敗!"
+        print(jsonresult)
+        return HttpResponse(jsonresult, content_type="application/json")
+
+@csrf_exempt
+def loginCheck(request):  
+    email=request.POST['email']
+    password=request.POST['password']
+    
+    try:
+        checkAccount=models.Account.objects.get(email=email, password=password)
+    
+        if checkAccount!= None:     
+            name=checkAccount.name
+            
+            request.session['name'] = name
+            request.session['email'] = email
+            return render(request, 'index.html', locals())
+    except:
+        mess = "帳號或是密碼輸入失敗!"
+       
+        return render(request, 'login.html', locals())
