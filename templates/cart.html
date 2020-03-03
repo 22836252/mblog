@@ -265,9 +265,11 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% block content %}
+                    {% for products in cartlist %}
                     <tr>
-                      <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="women's New Wine is an alcoholic" alt="women's New Wine is an alcoholic" src="image/product/2product50x59.jpg"></a></td>
-                      <td class="text-left"><a href="product.html">women's New Wine is an alcoholic</a></td>
+                      <td class="text-center"><a href="product.html"><img class="img-thumbnail" title="women's New Wine is an alcoholic" alt={{products.title}} src="/static/image/product/2product50x59.jpg"></a></td>
+                      <td class="text-left"><a href="product.html">productimage</a></td>
                       <td class="text-left">product 11</td>
                       <td class="text-left"><div style="max-width: 200px;" class="input-group btn-block">
                           <input type="text" class="form-control quantity" size="1" value="1" name="quantity">
@@ -281,7 +283,11 @@
                   </tbody>
                 </table>
               </div>
+
+              {% endfor %}
+              {% endblock %}
             </form>
+
             <h2>What would you like to do next?</h2>
             <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
             <div id="accordion" class="panel-group">

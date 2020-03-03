@@ -13,6 +13,7 @@ import random
 from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
+from django.db.models import Prefetch
 
 def homepage(request):
     template = get_template('index.html')
@@ -146,17 +147,21 @@ def post2(request, yr, mon, day, post_num):
     return render(request, 'post2.html', locals()) 
 
 
-def shippingcart(request):
-
-    try:
-        if request!= None:  
-            email=request.POST['email']
-            product=request.POST['product']
-        return render(request, 'shippingcart.html', locals())    
-    except:
+def shoppingcart(request):
+    name = request.session['name']
+    email= request.session['email']
+    # try:
+    Carts = Cart.objects.filter(BuyerName=name).prefetch_related("products_set")
+    print(Carts.productName) 
+    for a in Carts:
+        productinfo = a.products_set.all()
+        print(productinfo.productName) 
     
-        return render(request, 'shippingcart.html', locals()) 
-    
+    print("更新成功") 
+    return render(request, 'cart.html', locals()) 
+    # except:
+    #     print("更新失敗") 
+    #     return render(request, 'cart.html', locals()) 
 @csrf_exempt
 def addtocart(request):  
     name = request.session['name']
@@ -170,17 +175,21 @@ def addtocart(request):
         productlists = products.objects.get(sku=sku)
         if productlists.qty<0:
            return JsonResponse({'status':'fail','message':'庫存數不夠'})
-        try:
-            listcheck=models.Cart.objects.get(productName=productlists.name, productPrice=productlists.price, BuyerName=name)
-            print(listcheck)
-            if listcheck!=None:    
-                listcheck.qty=listcheck.qty+1
-                return JsonResponse({'status':'success','message':productlists.name+'已加入購物車'})
-        except:
 
-            Cart = models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name) 
-            Cart.save()
+        try:
+            listcheck=models.Cart.objects.get(productName=productlists.name, BuyerName=name)
+            listcheck.qty=listcheck.qty+1
+            listcheck.save()
+            
+        except:
+            create=models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name,qty=1, email=email)
+            create.save()
+            
+             
         return JsonResponse({'status':'success','message':productlists.name+'已加入購物車'})
+
+        
+          
         
     else:
         return JsonResponse({'status':'fail','message':'沒庫存'})

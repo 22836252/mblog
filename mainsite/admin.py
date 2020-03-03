@@ -4,11 +4,14 @@ from .models import products,Account,ShippingDetail,Cart,NewTable
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name','sku','slug','image','pub_date',)
 
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('productName','productPrice','BuyerName','qty','email','order_date',)
 
+ 
 
 admin.site.register(products, ProductAdmin)
 admin.site.register(Account)
 admin.site.register(ShippingDetail)
-admin.site.register(Cart)
+admin.site.register(Cart, CartAdmin)
 admin.site.register(NewTable)
 

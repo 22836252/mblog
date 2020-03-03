@@ -13,8 +13,8 @@ class products(models.Model):
     image1= models.CharField(max_length=200 , default='')
     image2= models.CharField(max_length=200 , default='')
     pub_date = models.DateTimeField(default=timezone.now)
-    abstract= models.CharField(max_length=200 , default='')
-    qty = models.PositiveIntegerField(default='')
+    pid= models.PositiveIntegerField(default=0)
+    qty = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField()   
     
     SIZES = (
@@ -43,7 +43,10 @@ class Cart(models.Model):
     productName = models.CharField(max_length=200)
     productPrice= models.CharField(max_length=200)
     BuyerName=models.CharField(max_length=200)
-
+    qty = models.PositiveIntegerField(default=0)
+    email= models.CharField(max_length=200, default='')
+    order_date = models.DateTimeField(default=timezone.now)
+    productsku=models.ForeignKey('products',on_delete=models.CASCADE,default=0)
     def __str__(self):
         return self.productName
 
