@@ -46,7 +46,7 @@ class Cart(models.Model):
     qty = models.PositiveIntegerField(default=0)
     email= models.CharField(max_length=200, default='')
     order_date = models.DateTimeField(default=timezone.now)
-    productsku=models.ForeignKey('products',on_delete=models.CASCADE,default=0)
+    productsku=models.CharField(max_length=200, default='')
     def __str__(self):
         return self.productName
 

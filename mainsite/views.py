@@ -151,13 +151,16 @@ def shoppingcart(request):
     name = request.session['name']
     email= request.session['email']
     # try:
-    Carts = Cart.objects.filter(BuyerName=name).prefetch_related("products_set")
-    print(Carts.productName) 
-    for a in Carts:
-        productinfo = a.products_set.all()
-        print(productinfo.productName) 
-    
-    print("更新成功") 
+    # Carts = Cart.objects.filter(BuyerName=name).prefetch_related("products_set")
+    # print(Carts.productName) 
+    # for a in Carts:
+    #     productinfo = a.products_set.all()
+    #     print(productinfo.productName) 
+    sql = '''
+             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productName join mainsite_Account c on b.email=c.email where c.email='ken99899@gmail.com' group by a.name order by a.qty Limit 3
+         '''
+    productslist = [a for a in products.objects.raw(sql)]
+    print(productslist) 
     return render(request, 'cart.html', locals()) 
     # except:
     #     print("更新失敗") 
@@ -166,7 +169,7 @@ def shoppingcart(request):
 def addtocart(request):  
     name = request.session['name']
     email= request.session['email']
-    response_data = {}
+    print(email)
     sku = request.POST['sku']
    
     checkAccount=models.Account.objects.get(email=email)    
@@ -177,7 +180,7 @@ def addtocart(request):
            return JsonResponse({'status':'fail','message':'庫存數不夠'})
 
         try:
-            listcheck=models.Cart.objects.get(productName=productlists.name, BuyerName=name)
+            listcheck=models.Cart.objects.filter(productName=productlists.name, BuyerName=name)
             listcheck.qty=listcheck.qty+1
             listcheck.save()
             

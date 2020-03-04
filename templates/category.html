@@ -44,8 +44,8 @@
   <script>
     function Postdata(val){  
     $("button").click(function() {
-          var sku=this.id;
-       
+      var sku = $(this).attr("id");
+       alert(sku)
 
     $.ajax({
       url: '/addtocart/',
@@ -61,49 +61,14 @@
           alert("發生錯誤: " + xhr.status + " " + xhr.statusText);}
     });
 
-
-      xhr.onload = function() {
-          var Result = JSON
-          console.log('Result =' + Result['result']);
-          document.getElementById('result').innerHTML = Result['result'] 
-          return 
-          };   
+  
+     
         });
+        break;
   };
   
   
-  function getCookie(name) {
-      var cookieValue = null;
-      if (document.cookie && document.cookie != '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-              var cookie = cookies[i].trim();
-              // Does this cookie string begin with the name we want?
-              if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                  break;
-              }
-          }
-      }
-      return cookieValue;
-  }
-  
-  
-  // Postdata(data)
-  
-  function test(){
-      var xhr = new XMLHttpRequest();
-  
-      xhr.open('get','https://hexschool.github.io/ajaxHomework/data.json',true);
-  
-      xhr.send(null);
-  
-      xhr.onload = function(data) {
-      console.log(xhr.responseText);
-      };
-  }
-  
-  console.log("Loading JS done")
+ 
 
 
   </script>
