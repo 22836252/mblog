@@ -180,12 +180,12 @@ def addtocart(request):
            return JsonResponse({'status':'fail','message':'庫存數不夠'})
 
         try:
-            listcheck=models.Cart.objects.filter(productName=productlists.name, BuyerName=name)
+            listcheck=models.Cart.objects.get(productName=productlists.name, BuyerName=name)
             listcheck.qty=listcheck.qty+1
             listcheck.save()
             
         except:
-            create=models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name,qty=1, email=email)
+            create=models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name,qty=1, email=email,productsku=sku)
             create.save()
             
              
@@ -200,7 +200,33 @@ def addtocart(request):
     
     
     
+@csrf_exempt
+def removefromcart(request):  
+    name = request.session['name']
+    email= request.session['email']
+    print(email)
+    sku = request.POST['sku']
+   
+    checkAccount=models.Account.objects.get(email=email)     
+    if sku != None: 
+        Cart.objects.filter(productsku=sku, BuyerName=name).delete()    
+        print("資料已刪除")
+    return JsonResponse({'status':'success','message':productlists.name+'資料已刪除'})
 
+@csrf_exempt
+def updatecartqty(request):  
+    name = request.session['name']
+    email= request.session['email']
+    print(email)
+    sku = request.POST['sku']
+   
+    checkAccount=models.Account.objects.get(email=email)     
+    if sku != None: 
+        GetCart=Cart.objects.filter(productsku=sku, BuyerName=name)    
+        GetCart=GetCart.qty+1
+        GetCart.save
+        print("數量已增加")
+    return JsonResponse({'status':'success','message':productlists.name+'數量已增加'})
 
 @csrf_exempt
 def loginCheck(request):  

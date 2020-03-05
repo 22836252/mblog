@@ -45,7 +45,7 @@
     function Postdata(val){  
     $("button").click(function() {
       var sku = $(this).attr("id");
-       alert(sku)
+     
 
     $.ajax({
       url: '/addtocart/',
@@ -60,11 +60,8 @@
         error:function(xhr){
           alert("發生錯誤: " + xhr.status + " " + xhr.statusText);}
     });
-
-  
-     
-        });
-        break;
+        });    
+        return false   
   };
   
   

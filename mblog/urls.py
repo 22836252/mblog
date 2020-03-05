@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart
+from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty
 from django.urls import reverse
 
 
@@ -44,7 +44,9 @@ urlpatterns = [
     path('aboutpage/', aboutpage),
     path('info/', include(my_patterns)),
     path('cart/', shoppingcart),
-     path('addtocart/', addtocart),
+    path('addtocart/', addtocart),
+    path('removefromcart/', removefromcart),
+    path('updatecartqty/', updatecartqty),
     
     path('testpage/', testpage),  
     path('showlist/<int:yr>/<int:mon>/<int:day>/', showlisting),

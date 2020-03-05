@@ -286,9 +286,30 @@
                     });
                 
                         });
-                        break
+                       
                   };
-                  
+                  function updatecartqty(){  
+                    $("button").click(function() {
+                      var sku = $(this).attr("id");
+                       alert(sku)
+                
+                    $.ajax({
+                      url: '/updatecartqty/',
+                      type: 'POST',
+                      dataType: 'json',
+                      data:{
+                            sku:sku           
+                        },
+                        success: function (data) { 
+                          alert(data.message)
+                                },
+                        error:function(xhr){
+                          alert("發生錯誤: " + xhr.status + " " + xhr.statusText);}
+                    });
+                
+                        });
+                       
+                  };
                   </script>
       {% block content %}
       {% for products in productslist %}
@@ -303,7 +324,7 @@
                       <td class="text-left"><div style="max-width: 200px;" class="input-group btn-block">
                           <input type="text" class="form-control quantity" size="1" value="{{products.qty}}" name="quantity">
                           <span class="input-group-btn">
-                          <button class="btn btn-primary" title="" data-toggle="tooltip" type="submit" data-original-title="Update"><i class="fa fa-refresh"></i></button>
+                          <button class="btn btn-primary" id="{{products.sku}}" onclick="updatecartqty()" title="" data-toggle="tooltip" type="submit" data-original-title="Update"><i class="fa fa-refresh"></i></button>
                           <button  class="btn btn-danger" id="{{products.sku}}" onclick="removeFromCart(this)" title="" data-toggle="tooltip" type="button" data-original-title="Remove"  ><i class="fa fa-times-circle"></i></button>
                           </span></div></td>
                       <td class="text-center">{{products.price}}</td>
