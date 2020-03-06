@@ -211,7 +211,7 @@ def removefromcart(request):
     if sku != None: 
         Cart.objects.filter(productsku=sku, BuyerName=name).delete()    
         print("資料已刪除")
-    return JsonResponse({'status':'success','message':productlists.name+'資料已刪除'})
+    return JsonResponse({'status':'success','message':Cart.productName+'資料已刪除'})
 
 @csrf_exempt
 def updatecartqty(request):  
@@ -226,7 +226,24 @@ def updatecartqty(request):
         GetCart=GetCart.qty+1
         GetCart.save
         print("數量已增加")
-    return JsonResponse({'status':'success','message':productlists.name+'數量已增加'})
+
+    JsonResponse({'status':'success','message':productlists.name+'數量已增加'})
+    return render(request, 'cart.html', locals())
+
+
+@csrf_exempt
+def checkout(request):
+   
+    name = request.session['name']
+    email= request.session['email']
+    checkAccount=models.Account.objects.get(email=email) 
+
+    for x in request:
+        print (x) # this will return the val1, val2, val3, val4, ..., valn
+        sku = request.POST['sku']
+        print (sku)
+
+    return render(request, 'cart.html', locals())
 
 @csrf_exempt
 def loginCheck(request):  
@@ -246,3 +263,23 @@ def loginCheck(request):
         mess = "帳號或是密碼輸入失敗!"
        
         return render(request, 'login.html', locals())
+@csrf_exempt
+def showcartinfo(request):  
+    name = request.session['name']
+    email= request.session['email']
+    sql = '''
+             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productName join mainsite_Account c on b.email=c.email where c.email='ken99899@gmail.com' group by a.name order by a.qty Limit 3
+         '''
+    productslist = [a for a in products.objects.raw(sql)]
+
+    totalprice=0
+    totalqty=0
+    for x in productslist:
+        print(x)
+        totalprice=x.products.price+tatalprice
+
+    # totalprice=productslist.price
+    # totalqty=productslist.qty
+    print(totalprice+"總數"+totalqty)
+
+    return render(request, 'category.html', locals())

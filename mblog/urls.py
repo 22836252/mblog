@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty
+from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty,checkout,showcartinfo
 from django.urls import reverse
 
 
@@ -30,11 +30,12 @@ my_patterns = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('index/', homepage),
     path('', homepage),
     path('products/<slug:slug>/', showpost),
     path('register.html', register),
     path('login.html', login),
-    path('category.html', category),
+    path('category.html', category,showcartinfo),
     path('registerinfo/', registerinfo),  
     path('loginCheck/', loginCheck), #POST傳送表單
     path('about/', about),
@@ -46,12 +47,14 @@ urlpatterns = [
     path('cart/', shoppingcart),
     path('addtocart/', addtocart),
     path('removefromcart/', removefromcart),
-    path('updatecartqty/', updatecartqty),
+    # path('updatecartqty/', updatecartqty),
+     path('checkout/', checkout),
     
+    path('updatecartqty/<int:sku>',updatecartqty),   
     path('testpage/', testpage),  
     path('showlist/<int:yr>/<int:mon>/<int:day>/', showlisting),
     path('post/<int:yr>/<int:mon>/<int:day>/<int:post_num>/', post, name='post-url'),
-
+ 
     path('post2/<int:yr>/<int:mon>/<int:day>/<int:post_num>/', post2, name='post-url2'),
 
     path('showlist/<int:yr>/<int:mon>/<int:day>/',showlisting, name='list-url'),
