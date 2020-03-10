@@ -266,12 +266,12 @@
                   </thead>
                   
                   <script>
+                   
 
                   var csrftoken = $("[name=csrfmiddlewaretoken]").val();
                     function removeFromCart(val){  
                   
-                      var sku = val
-                
+                      var sku = val        
                     $.ajax({
                       url: '/removefromcart/',
                       type: 'POST',
@@ -292,7 +292,21 @@
                     
                        
                   };
-                                      
+
+                  function getvalue(){
+
+                    var x=$(".productslistjson").val()
+                  
+                    context['productlist'] = list(SubMethod.objects.values_list('productlist', flat=True).all())
+                    for(i = 0; i < productlist.length; i++) {
+
+                      var x=(productlist[i])
+                      
+                    }    
+                    
+                  }
+                
+                   
                 
         //               $('#checkout').on('click', function () {
                         
@@ -311,6 +325,7 @@
         // });
                   </script>
       {% block content %}
+      <input type="hidden" name="productslistjson" id="productslistjson" value="{{productslistjson}}">
       {% for products in productslist %}
       <form class="form-horizontal" method="post" action="/checkout/" name="form1"> 
       
@@ -408,6 +423,7 @@
             <div class="buttons">
               <div class="pull-left"><a class="btn btn-default" href="/index/">Continue Shopping</a></div>
               <div class="pull-right"><input type="submit" class="btn btn-primary" value="Checkout"></div>
+              <button type="button" id="summitdata" class="btn btn-primary" onclick="getvalue()">getvalue</button>
             </form> 
             </div>
           </div>

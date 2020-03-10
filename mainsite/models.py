@@ -41,7 +41,7 @@ class Account(models.Model):
 class Cart(models.Model):
    
     productName = models.CharField(max_length=200)
-    productPrice= models.CharField(max_length=200)
+    price= models.PositiveIntegerField(default=0)
     BuyerName=models.CharField(max_length=200)
     qty = models.PositiveIntegerField(default=0)
     email= models.CharField(max_length=200, default='')

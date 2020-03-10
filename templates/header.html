@@ -42,6 +42,7 @@
                     <ul class="dropdown-menu dropdown-menu-right">
                       <li><a href="/register.html">Register</a></li>
                       <li><a href="/login.html">Login</a></li>
+                      <li><a href="/logOut.html">LogOut</a></li>
                     </ul>
                   </li>
                   <li><a href="#" id="wishlist-total" title="Wish List (0)"><i class="fa fa-heart"></i><span>Wish List</span><span> (0)</span></a></li>
@@ -79,16 +80,16 @@
             
             <button type="button" class="btn btn-inverse btn-block btn-lg dropdown-toggle cart-dropdown-button"> <span id="cart-total">
               <span class="cart-title">Shopping Cart</span><br>
-              {{totalprice}} item(s) - {{totalqty}}</span> </button>
+              共{{cartQty}} 件商品(s) -{{cartPrice}}元</span> </button>
             <ul class="dropdown-menu pull-right cart-dropdown-menu">
               <li>
                 <table class="table table-striped">
                   <tbody>
                     <tr>
-                      <td class="text-center"><a href="#"><img class="img-thumbnail" title="lorem ippsum dolor dummy" alt="lorem ippsum dolor dummy" src="/static/image/product/7product50x59.jpg"></a></td>
+                      <td class="text-center"><a href="#"><img class="img-thumbnail"  title="" alt="firstimage"height="10px" width="10px"  src="/static/image/product/{{firstimage}}.jpg"  width="5px"></a></td>
                       <td class="text-left"><a href="#">購物車</a></td>
-                      <td class="text-right">{{totalqty}}</td>
-                      <td class="text-right">{{totalprice}}</td>
+                      <td class="text-right">數量:{{cartQty}}件</td>
+                      <td class="text-right">價格:{{cartPrice}}元</td>
                       <td class="text-center"><button class="btn btn-danger btn-xs" title="Remove" type="button"><i class="fa fa-times"></i></button></td>
                     </tr>
                   </tbody>
@@ -100,7 +101,7 @@
                     <tbody>
                       <tr>
                         <td class="text-right"><strong>Sub-Total</strong></td>
-                        <td class="text-right">{{totalprice}}</td>
+                        <td class="text-right">{{cartPrice}}</td>
                       </tr>
                       <!-- <tr>
                         <td class="text-right"><strong>Eco Tax (-2.00)</strong></td>

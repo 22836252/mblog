@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Prefetch
+from django.core.serializers import serialize
 
 def homepage(request):
     template = get_template('index.html')
@@ -161,6 +162,8 @@ def shoppingcart(request):
          '''
     productslist = [a for a in products.objects.raw(sql)]
     print(productslist) 
+
+    productslistjson=serialize('json', productslist)
     return render(request, 'cart.html', locals()) 
     # except:
     #     print("更新失敗") 
@@ -171,19 +174,23 @@ def addtocart(request):
     email= request.session['email']
     print(email)
     sku = request.POST['sku']
-   
+    
     checkAccount=models.Account.objects.get(email=email)    
- 
+    if checkAccount==None:
+         return JsonResponse({'status':'fail','message':'請先登入'})
+    
     if sku != None:
         productlists = products.objects.get(sku=sku)
         if productlists.qty<0:
            return JsonResponse({'status':'fail','message':'庫存數不夠'})
-
+      
         try:
             listcheck=models.Cart.objects.get(productName=productlists.name, BuyerName=name)
             listcheck.qty=listcheck.qty+1
             listcheck.save()
-            
+            cartQty=0
+            cartPrice=0
+           
         except:
             create=models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name,qty=1, email=email,productsku=sku)
             create.save()
@@ -249,7 +256,31 @@ def checkout(request):
 def loginCheck(request):  
     email=request.POST['email']
     password=request.POST['password']
+    checkAccount=models.Account.objects.get(email=email) 
+
+    cartQty=0
+    cartPrice=0
     
+    checkqty=models.Cart.objects.filter(BuyerName=checkAccount.name)
+  
+    for x in checkqty:
+    
+  
+        cartPrice= x.price  +  cartPrice
+        cartQty=  x.qty  +  cartQty
+        productsku=checkqty[0].productsku
+
+    productlists = products.objects.get(sku=productsku)  
+    firstimage=productlists.image
+    print(cartQty)
+    print(cartPrice)
+    print(productsku)
+    request.session['cartQty'] = cartQty
+    request.session['cartPrice'] = cartPrice
+    request.session['firstimage'] = firstimage
+    print(firstimage)
+       
+   
     try:
         checkAccount=models.Account.objects.get(email=email, password=password)
     
@@ -259,27 +290,16 @@ def loginCheck(request):
             request.session['name'] = name
             request.session['email'] = email
             return render(request, 'index.html', locals())
+
     except:
         mess = "帳號或是密碼輸入失敗!"
        
         return render(request, 'login.html', locals())
+
 @csrf_exempt
-def showcartinfo(request):  
-    name = request.session['name']
-    email= request.session['email']
-    sql = '''
-             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productName join mainsite_Account c on b.email=c.email where c.email='ken99899@gmail.com' group by a.name order by a.qty Limit 3
-         '''
-    productslist = [a for a in products.objects.raw(sql)]
-
-    totalprice=0
-    totalqty=0
-    for x in productslist:
-        print(x)
-        totalprice=x.products.price+tatalprice
-
-    # totalprice=productslist.price
-    # totalqty=productslist.qty
-    print(totalprice+"總數"+totalqty)
-
-    return render(request, 'category.html', locals())
+def logOut(request):  
+           
+    request.session['name'] = None
+    request.session['email'] = None
+    mess = "帳號已經登出!"
+    return render(request, 'index.html', locals())

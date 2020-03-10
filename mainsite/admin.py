@@ -5,7 +5,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name','sku','slug','image','pub_date',)
 
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('productName','productPrice','BuyerName','qty','email','order_date',)
+    list_display = ('productName','price','BuyerName','qty','email','order_date','productsku')
 
  
 
