@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,logOut,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty,checkout
+from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,logOut,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty,checkout,POST_crawl,main
 from django.urls import reverse
 
 
@@ -58,8 +58,8 @@ urlpatterns = [
     path('post/<int:yr>/<int:mon>/<int:day>/<int:post_num>/', post, name='post-url'),
  
     path('post2/<int:yr>/<int:mon>/<int:day>/<int:post_num>/', post2, name='post-url2'),
-
+    path('crawlpage',main),   
     path('showlist/<int:yr>/<int:mon>/<int:day>/',showlisting, name='list-url'),
-
- 
+    path('POST_crawl/',POST_crawl) #在POST_crawl頁面執行POST_crawl函式
+   
 ]

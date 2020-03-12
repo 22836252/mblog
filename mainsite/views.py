@@ -15,6 +15,15 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.db.models import Prefetch
 from django.core.serializers import serialize
+from django.views.decorators import csrf
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
+from bs4 import BeautifulSoup
 
 def homepage(request):
     template = get_template('index.html')
@@ -310,4 +319,131 @@ def logOut(request):
     mess = "帳號已經登出!"
     return render(request, 'index.html', locals())
 
+def main(request):                         #render "index.html"出來
+    return render(request,'crawlpage.html')
 
+
+def POST_crawl(request):
+
+	#if 'title' in request.GET and request.GET['title']:
+	#keywords = input('請輸入工作職缺關鍵字:')
+	keywords = request.POST["title"]
+	print(keywords)
+
+	#url = "https://www.104.com.tw/jobs/search/?keyword=" + keywords 
+	url = "https://www.gintiantw.com/store?search=" + keywords 
+	options = Options()
+	#關閉瀏覽器跳出訊息
+	prefs = {
+	    'profile.default_content_setting_values' :
+	        {
+	        'notifications' : 2
+	         }
+	}
+	options.add_experimental_option('prefs',prefs)
+	options.add_argument("--headless")            #不開啟實體瀏覽器背景執行
+	options.add_argument("--incognito")           #開啟無痕模式
+
+	driver = webdriver.Chrome(options=options)
+
+
+	#第一頁內容
+	driver.get(url) 
+	with open('result.txt', 'w',encoding='utf-8') as f:
+       
+		try:
+			for i in range(1,10):
+
+				print('這是第'+ str(i) +'個商品')
+            
+				title = driver.find_elements_by_xpath('//*[@class="title"]')[4].text
+				print('公司名稱:' + title)
+				price = driver.find_elements_by_xpath('//*[@class="price"]')[4].text
+				print('職缺名稱:' + price)
+				job_content = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/p' %(i)).text
+				print('工作內容:' + job_content)
+				job_requirements = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/ul[2]' %(i)).text
+				print('工作地點與學經歷:' + '\n' + job_requirements)
+				job_salary = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/div/span[1]' %(i)).text
+				print('薪水:' + job_salary)
+				print('\n')
+				target = '這是第'+ str(i) +'個工作' + '\n' + '公司名稱:' + '公司名稱:' + job_company +'\n' + '職缺名稱:' + job_title +'\n' + '工作內容:' + job_content + '\n' + '工作地點與學經歷:' + '\n' + job_requirements + '\n' + '薪水:' + job_salary + '\n\n'
+				f.write(target)
+		except:
+			pass
+		driver.close()
+	text = []
+	with open ('result.txt','r',encoding='utf-8') as f:
+		for line in f:
+			text.append(line)
+	
+
+	return render(request,'result.html',locals())
+
+# def POST_crawl(request):
+#     categories = []
+
+#     web_site = "http://www.gintiantw.com"
+#     category = "/store/recommended"
+
+#     url = web_site+category
+#     r = request.get(url)
+#     html_content = r.text
+#     soup = BeautifulSoup(html_content, "html.parser")
+
+#     categorylist = soup.find_all('a', class_= "dropdown-tree-a")
+
+#     for line in categorylist:
+#         if(line.has_attr('href')):
+#             categories.append(line['href'])
+
+#     for cate in categories:
+#         if('/' in cate[7:]):
+#             catename = cate[7:].split('/')[1] + '.csv'
+#         else:
+#             catename = cate[7:]+'.csv'
+
+#         with open(catename, 'w') as csvfile:
+#             #into category website
+#             url = web_site + cate
+#             r = requests.get(url)
+#             html_content = r.text
+#             soup = BeautifulSoup(html_content, "html.parser")
+#             products = soup.find_all('div', class_ = "product")
+
+#             product_site = []
+#             for product in products:
+#                 product_site.append(product.select('div div a')[0]['href'])
+
+#             #into product in the category
+#             for product in product_site:
+#                 url = web_site+product
+#                 r = requests.get(url)
+#                 html_content = r.text
+#                 soup = BeautifulSoup(html_content, "html.parser")
+
+#                 product_title = soup.find_all('h1', class_="product-title")[0].get_text()
+#                 product_description = soup.find_all('div', class_="product-description")
+#                 for line in product_description:
+#                     product_size = line.find('p').text
+
+#                 product_size  = product_size[product_size.find('尺寸'):].split("\n")[0]
+#                 product_price = soup.find_all('h3', class_="product-price")[0].get_text()
+#                 product_price = product_price[4:]
+#                 product_quantity = soup.find_all('select', class_="product-quantity")[0].find_all('option')
+#                 if product_quantity==None:
+#                     print(url)
+#                 else:
+#                     try:
+#                         quantity = product_quantity[len(product_quantity) - 1].text
+#                     except:
+#                         print(url)
+#                     s = product_title.strip(" ")+','+product_size+','+product_price.strip()+','+quantity.strip()+'\n'
+
+
+
+#                     try:
+#                         csvfile.write(s)
+#                     except:
+#                         print(url+s)
+#     return render(request,'result.html',locals())
