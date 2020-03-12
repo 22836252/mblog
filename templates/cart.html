@@ -293,18 +293,20 @@
                        
                   };
 
-                  function getvalue(){
+                  // function getvalue(){
 
-                    var x=$(".productslistjson").val()
-                  
-                    context['productlist'] = list(SubMethod.objects.values_list('productlist', flat=True).all())
-                    for(i = 0; i < productlist.length; i++) {
 
-                      var x=(productlist[i])
-                      
-                    }    
+                  //   var listsize=$("input[name=listsize]").val();
+
+
+                  //   for(i=0;i<=listsize;i++){
                     
-                  }
+                  //   selector=qty+i
+                  //   var qty=$("input[selector]").val();
+                  
+                    
+                  //   }
+                  // }
                 
                    
                 
@@ -325,6 +327,8 @@
         // });
                   </script>
       {% block content %}
+      <input type="hidden" name="listsize" value="{{ list|length }}">
+    
       <input type="hidden" name="productslistjson" id="productslistjson" value="{{productslistjson}}">
       {% for products in productslist %}
       <form class="form-horizontal" method="post" action="/checkout/" name="form1"> 
@@ -337,7 +341,7 @@
                      
                       <td class="text-left">{{products.sku}}</td>
                       <td class="text-left"><div style="max-width: 200px;" class="input-group btn-block">
-                          <input type="text" class="form-control quantity" size="1" value="{{products.qty}}" name="quantity">
+                          <input type="text" class="form-control quantity" size="1" value="{{products.qty}}" name="qty{{forloop.counter}}">
                           <span class="input-group-btn">
                           <button class="btn btn-primary" value="{{products.sku}}" id="updatevalue"onclick="updatecartqty(value)" title="" data-toggle="tooltip" type="submit" data-original-title="Update"><i class="fa fa-refresh"></i></button>
                           <button  class="btn btn-danger" id="{{products.sku}}" onclick="removeFromCart(id)" title="" data-toggle="tooltip" type="button" data-original-title="Remove"  ><i class="fa fa-times-circle"></i></button>
@@ -345,10 +349,10 @@
                       <td class="text-center">{{products.price}}</td>
                       <td class="text-center" >{{products.price}}</td>
                     </tr>
-                    <input type="hidden" name="name" value="{{products.name}}">
-                    <input type="hidden" name="sku"  value="{{products.sku}}">
-                    <input type="hidden" name="price"  value="{{products.price}}">
-                    <input type="hidden" name="qty"  value="{{products.qty}}">
+                    <input type="hidden" name="name{{forloop.counter}}" value="{{products.name}}">
+                    <input type="hidden" name="sku{{forloop.counter}}"  value="{{products.sku}}">
+                    <input type="hidden" name="price{{forloop.counter}}"  value="{{products.price}}">
+                 
                   </tbody>
                
            
@@ -423,7 +427,7 @@
             <div class="buttons">
               <div class="pull-left"><a class="btn btn-default" href="/index/">Continue Shopping</a></div>
               <div class="pull-right"><input type="submit" class="btn btn-primary" value="Checkout"></div>
-              <button type="button" id="summitdata" class="btn btn-primary" onclick="getvalue()">getvalue</button>
+              <!-- <button type="button" id="summitdata" class="btn btn-primary" onclick="getvalue()">getvalue</button> -->
             </form> 
             </div>
           </div>

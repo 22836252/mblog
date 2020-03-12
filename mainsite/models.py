@@ -7,6 +7,7 @@ class products(models.Model):
     sku=models.CharField(max_length=200, default='A0001')
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200)
+    type =  models.CharField(max_length=200, default='其他')
     body = models.TextField()
     brand = models.CharField(max_length=200, default='自有品牌')
     image= models.CharField(max_length=200 , default='')

@@ -36,6 +36,11 @@ def showpost(request, slug):
 
 def category(request):
     
+    cartQty = request.session['cartQty']
+    cartPrice = request.session['cartPrice']
+    firstimage = request.session['firstimage']
+   
+
     productslist = products.objects.all()  
 
     if 'name' in request.session:
@@ -151,16 +156,13 @@ def post2(request, yr, mon, day, post_num):
 def shoppingcart(request):
     name = request.session['name']
     email= request.session['email']
-    # try:
-    # Carts = Cart.objects.filter(BuyerName=name).prefetch_related("products_set")
-    # print(Carts.productName) 
-    # for a in Carts:
-    #     productinfo = a.products_set.all()
-    #     print(productinfo.productName) 
+  
     sql = '''
-             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productName join mainsite_Account c on b.email=c.email where c.email='ken99899@gmail.com' group by a.name order by a.qty Limit 3
-         '''
-    productslist = [a for a in products.objects.raw(sql)]
+             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productName join mainsite_Account c on b.email=c.email where c.email = %s group by a.name order by a.qty Limit 3  '''
+        
+       
+            
+    productslist = [a for a in products.objects.raw(sql,[email])]
     print(productslist) 
 
     productslistjson=serialize('json', productslist)
@@ -245,10 +247,14 @@ def checkout(request):
     email= request.session['email']
     checkAccount=models.Account.objects.get(email=email) 
 
-    for x in request:
-        print (x) # this will return the val1, val2, val3, val4, ..., valn
-        sku = request.POST['sku']
-        print (sku)
+    cart=models.Cart.objects.filter(email=email)
+    
+    for i in range(len(cart)):
+        sku=request.POST['sku'+str(i+1)]
+        qty=request.POST['qty'+str(i+1)]
+        cartupdate=models.Cart.objects.get(productsku=sku, BuyerName=name)
+        cartupdate.qty=qty
+        cartupdate.save()
 
     return render(request, 'cart.html', locals())
 
@@ -303,3 +309,5 @@ def logOut(request):
     request.session['email'] = None
     mess = "帳號已經登出!"
     return render(request, 'index.html', locals())
+
+
