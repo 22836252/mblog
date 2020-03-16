@@ -69,6 +69,16 @@
        <input type="submit" value="送出">       
     </form>
 
+
+    
+    <form action="/getqty/" method="post" >{% csrf_token %}
+      輸入職缺名稱:<input type="text" name="title"><br>
+
+       
+      <button onclick="summitvalue()">取得庫存</button>
+
+      <input type="submit" value="送出">       
+   </form>
     <button onclick="printcsv(1)">匯出ＣＳＶ</button>
 
     <a href="{% url 'donwload_csv/' %}">Database Data CSV Write Operation</a>

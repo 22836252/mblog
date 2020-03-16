@@ -46,10 +46,10 @@ def showpost(request, slug):
 
 def category(request):
     
-    cartQty = request.session['cartQty']
-    cartPrice = request.session['cartPrice']
-    firstimage = request.session['firstimage']
-   
+    if 'cartQty' in request.session:
+        cartQty = request.session['cartQty']
+        cartPrice = request.session['cartPrice']
+
 
     productslist = products.objects.all()  
 
@@ -330,8 +330,9 @@ def POST_crawl(request):
 	#if 'title' in request.GET and request.GET['title']:
 	#keywords = input('請輸入工作職缺關鍵字:')
 	keywords = request.POST["title"]
-	print(keywords)
 
+
+	print('這是第'+ keywords +'頁')
 	#url = "https://www.104.com.tw/jobs/search/?keyword=" + keywords 
     
 	url = "https://www.gintiantw.com/store/sea/0309sea?page="+keywords+"&"
@@ -362,16 +363,20 @@ def POST_crawl(request):
             
 			title = driver.find_elements_by_xpath('//*[@class="title"]')[i].text
 			print('產品名稱:' + title)
+			
 			price = driver.find_elements_by_xpath('//*[@class="price"]')[i].text
 			print('價格:' + price)
 			price=price.replace('NTD ','')
+			price=price.replace(',','')
 			href = driver.find_elements_by_xpath('//*[@class="btn btn-primary"]')[i].get_attribute('href')
 			print('網址:' + str(href))
-			image=driver.find_elements_by_xpath('//*[@class="img-responsive"]')[i].get_attribute('src')
-			print('圖片:' + str(image))
+			imagelink=driver.find_elements_by_xpath('//*[@class="img-responsive"]')[i].get_attribute('src')
+			print('圖片:' + str(imagelink))
 			idno=href.replace('https://www.gintiantw.com/store/product/', '')
 			idno=idno.replace('?category=sea%2F0309sea', '')
 			print('產品編號:' + idno)
+			page=keywords
+			print('第' + keywords+'頁')
 			# job_content = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/p' %(i)).text
 			# print('工作內容:' + job_content)
 			# job_requirements = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/ul[2]' %(i)).text
@@ -382,15 +387,26 @@ def POST_crawl(request):
 			# target = '這是第'+ str(i) +'個工作' + '\n' + '公司名稱:' + '公司名稱:' + job_company +'\n' + '職缺名稱:' + job_title +'\n' + '工作內容:' + job_content + '\n' + '工作地點與學經歷:' + '\n' + job_requirements + '\n' + '薪水:' + job_salary + '\n\n'
 			target='產品名稱:' + title+'價格:' + price +'產品編號:' + idno + '網址:' + href +'\n'
 			f.write(target)
+		
 			try:
-				updatedata=models.products.objects.get(name=title)        
+				updatedata=models.products.objects.get(name=title)  
+				     
+				print(updatedata)
+	
 				
-				
+					
 			except:
-				create=models.products.objects.create(name=title, price=int(price), sku=idno)
+				create=models.products.objects.create(name=title, price=int(price), sku=idno,slug='k'+idno,image='p'+str(i),image1='p2',image2='p3',page=page,href=href,imagelink=imagelink)
 				create.save()
-            
+				print(create)
+
+		
+		
 		driver.close()
+		value=int(keywords)+1
+		newvalue=str(value)
+		getmany(newvalue)
+
 	text = []
 	with open ('result.txt','r',encoding='utf-8') as f:
 		for line in f:
@@ -398,6 +414,206 @@ def POST_crawl(request):
 	
 
 	return render(request,'result.html',locals())
+
+
+
+
+def getmany(nextindex):
+	print("這是第"+nextindex+"頁")
+	if nextindex==7:
+			return render(request,'result.html',locals())
+	#if 'title' in request.GET and request.GET['title']:
+	#keywords = input('請輸入工作職缺關鍵字:')
+
+
+	#url = "https://www.104.com.tw/jobs/search/?keyword=" + keywords 
+    
+	url = "https://www.gintiantw.com/store/sea/0309sea?page="+nextindex+"&"
+    
+	options = Options()
+	#關閉瀏覽器跳出訊息
+	prefs = {
+	    'profile.default_content_setting_values' :
+	        {
+	        'notifications' : 2
+	         }
+	}
+	options.add_experimental_option('prefs',prefs)
+	options.add_argument("--headless")            #不開啟實體瀏覽器背景執行
+	options.add_argument("--incognito")           #開啟無痕模式
+
+	driver = webdriver.Chrome(options=options)
+
+
+	#第一頁內容
+	driver.get(url) 
+	with open('result.txt', 'w',encoding='utf-8') as f:
+       
+		
+		for i in range(1,10):
+
+			print('這是第'+ str(i) +'個商品')
+			try:
+				title = driver.find_elements_by_xpath('//*[@class="title"]')[i].text
+				print('產品名稱:' + title)
+				
+				price = driver.find_elements_by_xpath('//*[@class="price"]')[i].text
+				print('價格:' + price)
+				price=price.replace('NTD ','')
+				price=price.replace(',','')
+				href = driver.find_elements_by_xpath('//*[@class="btn btn-primary"]')[i].get_attribute('href')
+				print('網址:' + str(href))
+				imagelink=driver.find_elements_by_xpath('//*[@class="img-responsive"]')[i].get_attribute('src')
+				print('圖片:' + str(imagelink))
+				idno=href.replace('https://www.gintiantw.com/store/product/', '')
+				idno=idno.replace('?category=sea%2F0309sea', '')
+				print('產品編號:' + idno)
+				page=nextindex
+				print('第' + page+'頁')
+				target='產品名稱:' + title+'價格:' + price +'產品編號:' + idno + '網址:' + href +'\n'
+				f.write(target)
+		
+				
+
+				
+		
+				try:
+					updatedata=models.products.objects.get(name=title)  
+							
+					print(updatedata)
+
+				
+						
+				except:
+					create=models.products.objects.create(name=title, price=int(price), sku=idno,slug='k'+idno,image='p'+str(i),image1='p2',image2='p3',page=page,href=href,imagelink=imagelink)
+					create.save()
+					print(create)
+
+			except:
+				print('no data')
+		
+			
+		
+		driver.close()
+
+		value=int(nextindex)+1
+		newvalue=str(value)
+		getmany(newvalue)
+
+		
+	text = []
+	with open ('result.txt','r',encoding='utf-8') as f:
+		for line in f:
+			text.append(line)
+	
+
+	return render(request,'result.html',locals())
+
+
+
+def getqty(request):
+
+		allurl=products.objects.filter(url!=nourl)
+		listsize=len(allurl)
+		for x in listsize(len):
+				url=allurl[x].url
+				runurl(url)
+
+
+		return render(request,'result.html',locals())
+
+def runurl(url):
+
+	#if 'title' in request.GET and request.GET['title']:
+	#keywords = input('請輸入工作職缺關鍵字:')
+	# keywords = request.POST["title"]
+
+
+
+	#url = "https://www.104.com.tw/jobs/search/?keyword=" + keywords 
+  
+	print(url)
+
+    
+	options = Options()
+	#關閉瀏覽器跳出訊息
+	prefs = {
+	    'profile.default_content_setting_values' :
+	        {
+	        'notifications' : 2
+	         }
+	}
+	options.add_experimental_option('prefs',prefs)
+	options.add_argument("--headless")            #不開啟實體瀏覽器背景執行
+	options.add_argument("--incognito")           #開啟無痕模式
+
+	driver = webdriver.Chrome(options=options)
+
+
+	#第一頁內容
+	driver.get(url) 
+	with open('result.txt', 'w',encoding='utf-8') as f:
+       
+		
+		for i in range(1,10):
+
+			print('這是第'+ str(i) +'個商品')
+            
+			title = driver.find_elements_by_xpath('//*[@class="title"]')[i].text
+			print('產品名稱:' + title)
+			
+			price = driver.find_elements_by_xpath('//*[@class="price"]')[i].text
+			print('價格:' + price)
+			price=price.replace('NTD ','')
+			price=price.replace(',','')
+			href = driver.find_elements_by_xpath('//*[@class="btn btn-primary"]')[i].get_attribute('href')
+			print('網址:' + str(href))
+			imagelink=driver.find_elements_by_xpath('//*[@class="img-responsive"]')[i].get_attribute('src')
+			print('圖片:' + str(imagelink))
+			idno=href.replace('https://www.gintiantw.com/store/product/', '')
+			idno=idno.replace('?category=sea%2F0309sea', '')
+			print('產品編號:' + idno)
+			page=keywords
+			print('第' + keywords+'頁')
+			# job_content = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/p' %(i)).text
+			# print('工作內容:' + job_content)
+			# job_requirements = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/ul[2]' %(i)).text
+			# print('工作地點與學經歷:' + '\n' + job_requirements)
+			# job_salary = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/div/span[1]' %(i)).text
+			# print('薪水:' + job_salary)
+			# print('\n')
+			# target = '這是第'+ str(i) +'個工作' + '\n' + '公司名稱:' + '公司名稱:' + job_company +'\n' + '職缺名稱:' + job_title +'\n' + '工作內容:' + job_content + '\n' + '工作地點與學經歷:' + '\n' + job_requirements + '\n' + '薪水:' + job_salary + '\n\n'
+			target='產品名稱:' + title+'價格:' + price +'產品編號:' + idno + '網址:' + href +'\n'
+			f.write(target)
+		
+			try:
+				updatedata=models.products.objects.get(name=title)  
+				     
+				print(updatedata)
+	
+				
+					
+			except:
+				create=models.products.objects.create(name=title, price=int(price), sku=idno,slug='k'+idno,image='p'+str(i),image1='p2',image2='p3',page=page,href=href,imagelink=imagelink)
+				create.save()
+				print(create)
+
+		
+		
+		driver.close()
+		value=int(keywords)+1
+		newvalue=str(value)
+		getmany(newvalue)
+
+	text = []
+	with open ('result.txt','r',encoding='utf-8') as f:
+		for line in f:
+			text.append(line)
+	
+
+	return "ok"
+
+
 
 
 # def POST_crawl(request):
@@ -472,20 +688,19 @@ def POST_crawl(request):
 def donwload_csv(request):
 
     # change export csv formatting by request parameter. ( url?encode=utf-8 )
-    encode = request.GET.get('encode', 'big5')
-
- 
+    encode = request.GET.get('encode', 'utf-8')
 
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="csv_simple_write.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['first_name', 'last_name', 'phone_number', 'country'])
-    writer.writerow(['Huzaif', 'Sayyed', '+919954465169', 'India'])
-    writer.writerow(['Adil', 'Shaikh', '+91545454169', 'India'])
-    writer.writerow(['Ahtesham', 'Shah', '+917554554169', 'India'])
 
+    writer.writerow(['品名', '價格', '型號', '圖片','圖片連結','資料連結'])
+    productlist=models.products.objects.all()
+    for i in range(1,10):
+        writer.writerow([productlist[i].name, productlist[i].price, productlist[i].sku, productlist[i].imagelink,productlist[i].href])
+  
     return response
 
 

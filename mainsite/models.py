@@ -17,7 +17,10 @@ class products(models.Model):
     pid= models.PositiveIntegerField(default=0)
     qty = models.PositiveIntegerField(default=0)
     price = models.PositiveIntegerField()   
-    
+    page= models.PositiveIntegerField(default='0') 
+    href=models.CharField(max_length=200 , default='nourl')
+    imagelink=models.CharField(max_length=200 , default='nourl')
+
     SIZES = (
         ('S', 'Small'),
         ('M', 'Medium'),

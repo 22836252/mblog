@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import products,Account,ShippingDetail,Cart,NewTable
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name','sku','slug','image','pub_date',)
+    list_display = ('name','sku','slug','image','pub_date','page','href','imagelink')
 
 class CartAdmin(admin.ModelAdmin):
     list_display = ('productName','price','BuyerName','qty','email','order_date','productsku')
