@@ -8,6 +8,7 @@ from django.shortcuts import render
 from .models import products
 from .models import Account
 from .models import Cart
+from django.db.models import Q
 from django.http import Http404
 import random
 from django.urls import reverse
@@ -513,11 +514,12 @@ def getmany(nextindex):
 
 def getqty(request):
 
-		allurl=products.objects.filter(url!=nourl)
+		allurl=products.objects.filter(~Q(href= 'nourl'))
 		listsize=len(allurl)
-		for x in listsize(len):
-				url=allurl[x].url
-				runurl(url)
+		for x in range(1,listsize):
+				url=allurl[x].href
+				if runurl(url)=="ok":
+					continue
 
 
 		return render(request,'result.html',locals())
@@ -555,55 +557,46 @@ def runurl(url):
 	with open('result.txt', 'w',encoding='utf-8') as f:
        
 		
-		for i in range(1,10):
-
-			print('這是第'+ str(i) +'個商品')
-            
-			title = driver.find_elements_by_xpath('//*[@class="title"]')[i].text
-			print('產品名稱:' + title)
-			
-			price = driver.find_elements_by_xpath('//*[@class="price"]')[i].text
-			print('價格:' + price)
-			price=price.replace('NTD ','')
-			price=price.replace(',','')
-			href = driver.find_elements_by_xpath('//*[@class="btn btn-primary"]')[i].get_attribute('href')
-			print('網址:' + str(href))
-			imagelink=driver.find_elements_by_xpath('//*[@class="img-responsive"]')[i].get_attribute('src')
-			print('圖片:' + str(imagelink))
-			idno=href.replace('https://www.gintiantw.com/store/product/', '')
-			idno=idno.replace('?category=sea%2F0309sea', '')
-			print('產品編號:' + idno)
-			page=keywords
-			print('第' + keywords+'頁')
-			# job_content = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/p' %(i)).text
-			# print('工作內容:' + job_content)
-			# job_requirements = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/ul[2]' %(i)).text
-			# print('工作地點與學經歷:' + '\n' + job_requirements)
-			# job_salary = driver.find_element_by_xpath('//*[@id="js-job-content"]/article[%d]/div[1]/div/span[1]' %(i)).text
-			# print('薪水:' + job_salary)
-			# print('\n')
-			# target = '這是第'+ str(i) +'個工作' + '\n' + '公司名稱:' + '公司名稱:' + job_company +'\n' + '職缺名稱:' + job_title +'\n' + '工作內容:' + job_content + '\n' + '工作地點與學經歷:' + '\n' + job_requirements + '\n' + '薪水:' + job_salary + '\n\n'
-			target='產品名稱:' + title+'價格:' + price +'產品編號:' + idno + '網址:' + href +'\n'
-			f.write(target)
-		
-			try:
-				updatedata=models.products.objects.get(name=title)  
-				     
-				print(updatedata)
 	
+
+			title = driver.find_elements_by_xpath('//*[@class="product-title"]')[0].text
+			print('產品名稱:' + title)
+		
+			select= Select(driver.find_element_by_name('product-quantity'))
+			
+			qty=0
+			for op in select.options:
 				
+					if float(op.text)>float(qty):
+							qty=float(op.text)
+							qty=int(float(op.text))
+			print('產品數量'+str(qty))
+			body = driver.find_elements_by_xpath('//*[@class="product-description"]')
+			
+			x1=""
+			for op1 in body:
 					
-			except:
-				create=models.products.objects.create(name=title, price=int(price), sku=idno,slug='k'+idno,image='p'+str(i),image1='p2',image2='p3',page=page,href=href,imagelink=imagelink)
-				create.save()
-				print(create)
+					x1+=op1.text
+					
+					print(x1)
+		
+		
+
+		
+	
+			updatedata=products.objects.get(name=title)  
+			updatedata.qty=qty
+			updatedata.body=x1
+			updatedata.save()
+			print(updatedata)
+	
+		
 
 		
 		
-		driver.close()
-		value=int(keywords)+1
-		newvalue=str(value)
-		getmany(newvalue)
+		
+	
+	
 
 	text = []
 	with open ('result.txt','r',encoding='utf-8') as f:
