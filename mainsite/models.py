@@ -10,7 +10,7 @@ class products(models.Model):
     type =  models.CharField(max_length=200, default='其他')
     body = models.TextField()
     brand = models.CharField(max_length=200, default='自有品牌')
-    image= models.CharField(max_length=200 , default='')
+    images= models.CharField(max_length=200 , default='')
     image1= models.CharField(max_length=200 , default='')
     image2= models.CharField(max_length=200 , default='')
     pub_date = models.DateTimeField(default=timezone.now)

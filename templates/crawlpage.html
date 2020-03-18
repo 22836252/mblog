@@ -79,6 +79,13 @@
 
       <input type="submit" value="送出">       
    </form>
+   <form action="/getcrawl/" method="post" >{% csrf_token %}
+    查詢流水號:<input type="text" name="title"><br>
+
+
+    <input type="submit" value="送出">       
+ </form>
+
     <button onclick="printcsv(1)">匯出ＣＳＶ</button>
 
     <a href="{% url 'donwload_csv/' %}">Database Data CSV Write Operation</a>

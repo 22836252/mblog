@@ -71,16 +71,16 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="thumbnails">
-              <div><a class="thumbnail" href="/static/image/product/{{productslist.image}}.jpg" title="{{productslist.name}}">
-                <img src="/static/image/product/{{productslist.image}}.jpg" title="lorem ippsum dolor dummy" alt="lorem ippsum dolor dummy" /></a></div>
+              <div><a class="thumbnail" href="https://{{productslist.imagelink}}" title="{{productslist.name}}">
+                <img src="https://{{productslist.imagelink}}" title="lorem ippsum dolor dummy" alt="lorem ippsum dolor dummy" /></a></div>
               <div id="product-thumbnail" class="owl-carousel">
                 <div class="item">
 
-                  <div class="image-additional"><a class="thumbnail  " href="/static/image/product/{{productslist.image1}}.jpg" title="無圖片"> <img src="/static/image/product/{{productslist.image1}}.jpg" title="無圖片" alt="無圖片1" /></a></div>
+                  <div class="image-additional"><a class="thumbnail  " href="https://{{productslist.imagelink}}" title="無圖片"> <img src="https://{{products.imagelink}}" title="無圖片" alt="無圖片1" /></a></div>
                 </div>
                 <div class="item">
-                  <div class="image-additional"><a class="thumbnail  " href="/static/image/product/{{productslist.image2}}.jpg" title="lorem ippsum dolor dummy"> <img src="/static/image/product/{{productslist.image2}}.jpg" title="無圖片" alt="無圖片" /></a></div>
-                </div>
+                  <div class="image-additional"><a class="thumbnail  " href="https://{{productslist.imagelink}}" title="lorem ippsum dolor dummy"> <img src="/static/image/product/{{productslist.image2}}.jpg" title="無圖片" alt="無圖片" /></a></div>
+                </div>$ git push heroku master
                 <div class="item">
                   <div class="image-additional"><a class="thumbnail  " href="/static/image/product/p3.jpg" title="lorem ippsum dolor dummy"> <img src="/static/image/product/pro-3-220x294.jpg" title="lorem ippsum dolor dummy" alt="lorem ippsum dolor dummy" /></a></div>
                 </div>
@@ -101,7 +101,7 @@
           </div>
           
           <div class="col-sm-6">
-            <h1 class="productpage-title">{{productslist.title}}</h1>
+            <h1 class="productpage-title">{{productslist.name}}</h1>
             <div class="rating product"> 
                 
                   

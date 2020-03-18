@@ -67,11 +67,14 @@ WSGI_APPLICATION = 'mblog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'newshop',  # 数据库名字(需要先创建)
+        'USER': 'postgres',  # 登录用户名
+        'PASSWORD': 'admin',  # 密码
+        'HOST': '',  # 数据库IP地址,留空默认为localhost
+        'PORT': '5432',  # 端口
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

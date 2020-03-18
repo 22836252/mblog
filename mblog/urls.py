@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,logOut,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty,checkout,POST_crawl,main,donwload_csv,getqty
+from mainsite.views import homepage, showpost,category,register,registerinfo,loginCheck,login,logOut,about,listing,disp_detail,aboutpage,company,info,sales,contact,post,post2,testpage,showlisting,shoppingcart,addtocart,removefromcart,updatecartqty,checkout,POST_crawl,main,donwload_csv,getqty,getcrawl
 from django.urls import reverse
 
 
@@ -61,6 +61,8 @@ urlpatterns = [
     path('crawlpage',main),   
     path('showlist/<int:yr>/<int:mon>/<int:day>/',showlisting, name='list-url'),
     path('getqty/',getqty), #在POST_crawl頁面執行POST_crawl函式
+    path('getcrawl/',getcrawl), #在POST_crawl頁面執行POST_crawl函式
+    
     path('POST_crawl/',POST_crawl), #在POST_crawl頁面執行POST_crawl函式
     path('donwload_csv/',donwload_csv,name='donwload_csv/') #在POST_crawl頁面執行POST_crawl函式
 ]

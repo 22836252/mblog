@@ -27,6 +27,16 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import csv
 
+
+
+def link(request):
+    import psycopg2
+    conn = psycopg2.connect(database="shop", user="postgres", password="admin", host="127.0.0.1", port="5432")
+    cur = conn.cursor()
+    cur.execute("INSERT INTO ewrwe.product (name ) VALUES (\'" + "123"  +"\')") 
+    conn.commit()
+
+
 def homepage(request):
     template = get_template('index.html')
     productslist = products.objects.all()
@@ -524,16 +534,12 @@ def getqty(request):
 
 		return render(request,'result.html',locals())
 
+
+
+
 def runurl(url):
 
-	#if 'title' in request.GET and request.GET['title']:
-	#keywords = input('請輸入工作職缺關鍵字:')
-	# keywords = request.POST["title"]
 
-
-
-	#url = "https://www.104.com.tw/jobs/search/?keyword=" + keywords 
-  
 	print(url)
 
     
@@ -556,9 +562,6 @@ def runurl(url):
 	driver.get(url) 
 	with open('result.txt', 'w',encoding='utf-8') as f:
        
-		
-	
-
 			title = driver.find_elements_by_xpath('//*[@class="product-title"]')[0].text
 			print('產品名稱:' + title)
 		
@@ -603,6 +606,98 @@ def runurl(url):
 		for line in f:
 			text.append(line)
 	
+
+	return "ok"
+
+def getcrawl(request):
+
+		
+	for x in range(1,5):
+		
+			url="https://www.gintiantw.com/store/product/"+str(int(23594-x))
+			
+			if runurlwithindex(url)=="ok":
+				continue
+
+
+	return render(request,'result.html',locals())
+
+
+
+def runurlwithindex(url):
+#爬流水號
+
+	print(url)
+
+    
+	options = Options()
+	#關閉瀏覽器跳出訊息
+	prefs = {
+	    'profile.default_content_setting_values' :
+	        {
+	        'notifications' : 2
+	         }
+	}
+	options.add_experimental_option('prefs',prefs)
+	options.add_argument("--headless")            #不開啟實體瀏覽器背景執行
+	options.add_argument("--incognito")           #開啟無痕模式
+
+	driver = webdriver.Chrome(options=options)
+
+
+	#第一頁內容
+	driver.get(url) 
+	with open('result.txt', 'w',encoding='utf-8') as f:
+       
+		
+	
+
+			title = driver.find_elements_by_xpath('//*[@class="product-title"]')[0].text
+			print('產品名稱:' + title)
+			
+			#sku = filter(str.isdigit, title)留取編碼
+			select= Select(driver.find_element_by_name('product-quantity'))
+			
+			qty=0
+			for op in select.options:
+				
+					if float(op.text)>float(qty):
+							qty=float(op.text)
+							qty=int(float(op.text))
+			print('產品數量'+str(qty))
+			body = driver.find_elements_by_xpath('//*[@class="product-description"]')
+			
+			x1=""
+			for op1 in body:
+					
+					x1+=op1.text
+					
+					print(x1)
+
+			price = driver.find_elements_by_xpath('//*[@class="product-price"]')[0].text
+			print('價格:' + price)
+			price=price.replace('NTD ','')
+			price=price.replace(',','')
+			href = url
+			print('網址:' + str(href))
+
+			idno=href.replace('https://www.gintiantw.com/store/product/', '')
+	
+			print('產品編號:' + idno)
+			imagelink="www.gintiantw.com/resources/products/"+idno+"/image0.jpg?v=1"
+			print('圖片:' + str(imagelink))
+			p2="www.gintiantw.com/resources/products/"+idno+"/image1.jpg?v=1"
+			print('圖片:' + str(p2))
+
+			create=models.products.objects.create(name=title, price=int(price), body=x1,sku=idno,slug=idno,qty=qty,images='p1',image1=p2,image2='p3',href=href,imagelink=imagelink)
+			create.save()
+			print(create)
+		
+
+	text = []
+	with open ('result.txt','r',encoding='utf-8') as f:
+		for line in f:
+			text.append(line)	
 
 	return "ok"
 
@@ -689,10 +784,10 @@ def donwload_csv(request):
 
     writer = csv.writer(response)
 
-    writer.writerow(['品名', '價格', '型號', '圖片','圖片連結','資料連結'])
+    writer.writerow(['品名', '價格', '型號', '數量','產品描述','圖片','圖片連結','資料連結'])
     productlist=models.products.objects.all()
-    for i in range(1,10):
-        writer.writerow([productlist[i].name, productlist[i].price, productlist[i].sku, productlist[i].imagelink,productlist[i].href])
+    for i in range(1,4):
+        writer.writerow([productlist[i].name, productlist[i].price, productlist[i].sku, productlist[i].qty,productlist[i].body,productlist[i].imagelink,productlist[i].href])
   
     return response
 
