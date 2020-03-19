@@ -69,6 +69,9 @@ WSGI_APPLICATION = 'mblog.wsgi.application'
 
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -121,5 +124,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = False
 # APPEND_SLASH = False
 
-
-django_heroku.settings(locals())
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config()
