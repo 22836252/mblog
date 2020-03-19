@@ -6,8 +6,6 @@ import subprocess
 
 bashCommand = "heroku config:get DATABASE_URL -a bestbuyshop" #Use your app_name
 
-output = subprocess.check_output(['bash','-c', bashCommand]).decode("utf-8") # executing the bash command and converting byte to string
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
