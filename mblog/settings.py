@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'mblog.wsgi.application'
 
 
 DATABASES = {'default': dj_database_url.config(default='postgres://foo:bar@localhost:5432/db')}
-DATABASE_URL=postgres://localhost/bestbuyshop
+DATABASE_URL= postgres://olwnxtfvsjokhw:c6cf5f7d46288af832615b2ec459b405b4685c6205548b6b9ec071fb338dd797@ec2-52-45-14-227.compute-1.amazonaws.com:5432/d5i1386h344v8v
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
