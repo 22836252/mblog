@@ -2,6 +2,11 @@ import os
 import django_heroku
 import dj_database_url
 
+
+bashCommand = "heroku config:get DATABASE_URL -a bestbuyshop" #Use your app_name
+
+output = subprocess.check_output(['bash','-c', bashCommand]).decode("utf-8") # executing the bash command and converting byte to string
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -28,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainsite',
-    'markdown_deux',
+ 
 ]
 
 MIDDLEWARE = [
@@ -64,22 +69,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mblog.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'newshop',  # 数据库名字(需要先创建)
-        'USER': 'postgres',  # 登录用户名
-        'PASSWORD': 'admin',  # 密码
-        'HOST': '',  # 数据库IP地址,留空默认为localhost
-        'PORT': '5432',  # 端口
-        'CONN_MAX_AGE': 500,
-        'ssl_require':True
-    }
-}
 
+DATABASES = {'default': dj_database_url.config(default='postgres://foo:bar@localhost:5432/db')}
+DATABASE_URL=postgres://localhost/bestbuyshop
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -99,9 +91,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'zh-Hant'
 
 TIME_ZONE = 'Asia/Taipei'
@@ -113,8 +102,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
@@ -122,14 +110,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-MARKDOWN_DEUX_STYLES = {
-    "default": {
-        "extras": {
-        "code-friendly": None,
-    },
-        "safe_mode": False,
-    },
-}
+
 
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
