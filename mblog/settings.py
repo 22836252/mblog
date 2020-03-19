@@ -1,6 +1,7 @@
 import os
 import django_heroku
 import dj_database_url
+import subprocess
 
 
 bashCommand = "heroku config:get DATABASE_URL -a bestbuyshop" #Use your app_name
