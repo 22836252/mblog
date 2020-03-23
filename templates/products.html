@@ -39,7 +39,39 @@
     <script src="javascript/common.js" type="text/javascript"></script>
     <script src="/static/javascript/global.js" type="text/javascript"></script>
     <script src="/static/owl-carousel/owl.carousel.min.js" type="text/javascript"></script>
-
+    <script>
+      function addtocart(val){  
+       
+        var sku = val;
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                
+               
+  
+      $.ajax({
+        url: '/addtocart/',
+        type: 'POST',
+        dataType: 'json',
+        data:{
+              sku:sku           
+          },
+          headers: {
+                    "X-CSRFToken": csrftoken
+                },
+          success: function (data) { 
+            alert(data.message)
+                  },
+          error:function(xhr){
+            alert("發生錯誤: " + xhr.status + " " + xhr.statusText);}
+      });
+       
+        
+    };
+    
+    
+   
+  
+  
+    </script>
 </head>
 
 <body>
@@ -70,6 +102,8 @@
     <div id="content" class="col-sm-12">
         <div class="row">
           <div class="col-sm-6">
+            <form class="form-horizontal" method="post" action="/addtocart/" name="form1"> 
+              {% csrf_token %}
             <div class="thumbnails">
               <div><a class="thumbnail" href="https://{{productslist.imagelink}}" title="{{productslist.name}}">
                 <img src="https://{{productslist.imagelink}}" title="lorem ippsum dolor dummy" alt="lorem ippsum dolor dummy" /></a></div>
@@ -80,7 +114,7 @@
                 </div>
                 <div class="item">
                   <div class="image-additional"><a class="thumbnail  " href="https://{{productslist.imagelink}}" title="lorem ippsum dolor dummy"> <img src="/static/image/product/{{productslist.image2}}.jpg" title="無圖片" alt="無圖片" /></a></div>
-                </div>$ git push heroku master
+                </div>
                 <div class="item">
                   <div class="image-additional"><a class="thumbnail  " href="/static/image/product/p3.jpg" title="lorem ippsum dolor dummy"> <img src="/static/image/product/pro-3-220x294.jpg" title="lorem ippsum dolor dummy" alt="lorem ippsum dolor dummy" /></a></div>
                 </div>
@@ -135,11 +169,12 @@
                 <input type="hidden" name="product_id" value="48" />
                 <div class="btn-group">
                   <button type="button" data-toggle="tooltip" class="btn btn-default wishlist" title="Add to Wish List" ><i class="fa fa-heart-o"></i></button>
-                  <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block addtocart">Add to Cart</button>
+                  <button type="button" id="button-cart" data-loading-text="Loading..." class="btn btn-primary btn-lg btn-block addtocart" onclick="addtocart({{productslist.sku}})">Add to Cart</button>
                   <button type="button" data-toggle="tooltip" class="btn btn-default compare" title="Compare this Product" ><i class="fa fa-exchange"></i></button>
                 </div>
               </div>
             </div>
+          </form>
           </div>
         </div>
        
@@ -282,7 +317,7 @@
                 </div>
                 <div class="button-group">
                   <button type="button" class="wishlist" data-toggle="tooltip" title="Add to Wish List"><i class="fa fa-heart-o"></i></button>
-                  <button type="button" class="addtocart-btn">Add to Cart</button>
+                  <button type="button" class="addtocart-btn" onclik="addtocart()">Add to Cart</button>
                   <button type="button" class="compare" data-toggle="tooltip" title="Compare this Product"><i class="fa fa-exchange"></i></button>
                 </div>
               </div>

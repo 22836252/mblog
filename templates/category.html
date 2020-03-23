@@ -57,9 +57,12 @@
     {% include 'sidebar.html' %}
   
   </div>
+
+
+    
   <script>
     function Postdata(val){  
-     
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
       var sku = val;
       
 
@@ -70,8 +73,15 @@
       data:{
             sku:sku           
         },
+        headers: {
+                "X-CSRFToken": csrftoken
+            },
         success: function (data) { 
           alert(data.message)
+          
+          $('#cart-total').text(' 共'+data.cartQty+'件商品(s) -'+data.cartPrice+'元');
+        
+          
                 },
         error:function(xhr){
           alert("發生錯誤: " + xhr.status + " " + xhr.statusText);}
@@ -129,6 +139,9 @@
       <div class="grid-list-wrapper">
         
 {% block content %}
+
+<form class="form-horizontal" method="post" action="/addtocart/" name="form1"> 
+  {% csrf_token %}
 {% for products in productslist %}
 
 
@@ -191,6 +204,7 @@
             <br>
             
         {% endfor %}
+        </form>
         {% endblock %}
       
       <div class="category-page-wrapper">
