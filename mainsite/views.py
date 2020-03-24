@@ -50,18 +50,20 @@ def showpost(request, slug):
         productslist = products.objects.get(slug=slug)
         if productslist != None:
             html = template.render(locals())
-            return render(request, 'products.html', locals())
+            return HttpResponse(html)
     except:
         return redirect('/')
 
 
 def category(request):
-    cartQty=request.session['cartQty'] 
-    cartPrice=request.session['cartPrice']
-    firstimage=request.session['firstimage'] 
+    
+    if 'cartQty' in request.session:
+        cartQty = request.session['cartQty']
+        cartPrice = request.session['cartPrice']
 
 
     productslist = products.objects.all()  
+
     if 'name' in request.session:
         name = request.session['name']
     return render(request, 'category.html', locals())
@@ -79,7 +81,7 @@ def login(request):
     template = get_template('login.html')  
     productslist = products.objects.all()
     html = template.render(locals())
-    return render(request, 'login.html', locals())
+    return HttpResponse(html)
 @csrf_exempt
 def registerinfo(request):  
     name = request.POST['name']
@@ -177,7 +179,7 @@ def shoppingcart(request):
     email= request.session['email']
   
     sql = '''
-             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productname join mainsite_Account c on b.email=c.email where c.email = %s order by a.qty Limit 3  '''
+             SELECT * from  mainsite_products a join mainsite_Cart b on a.name=b.productName join mainsite_Account c on b.email=c.email where c.email = %s group by a.name order by a.qty Limit 3  '''
         
        
             
@@ -189,16 +191,16 @@ def shoppingcart(request):
     # except:
     #     print("更新失敗") 
     #     return render(request, 'cart.html', locals()) 
-
+@csrf_exempt
 def addtocart(request):  
     name = request.session['name']
     email= request.session['email']
     print(email)
     sku = request.POST['sku']
-    if email==None:
-        return JsonResponse({'status':'fail','message':'請先登入'})
+    
     checkAccount=models.Account.objects.get(email=email)    
-
+    if checkAccount==None:
+         return JsonResponse({'status':'fail','message':'請先登入'})
     
     if sku != None:
         productlists = products.objects.get(sku=sku)
@@ -206,41 +208,18 @@ def addtocart(request):
            return JsonResponse({'status':'fail','message':'庫存數不夠'})
       
         try:
-            listcheck=models.Cart.objects.get(productname=productlists.name, buyername=name)
-            listcheck.totalqty=listcheck.totalqty+1
-            listcheck.totalprice=listcheck.totalprice+productlists.price
-            print(listcheck.totalprice)
+            listcheck=models.Cart.objects.get(productName=productlists.name, BuyerName=name)
+            listcheck.qty=listcheck.qty+1
             listcheck.save()
+            cartQty=0
+            cartPrice=0
            
         except:
-            create=models.Cart.objects.create(productname=productlists.name, totalprice=productlists.price, buyername=name,totalqty=1, email=email,productsku=sku)
+            create=models.Cart.objects.create(productName=productlists.name, productPrice=productlists.price, BuyerName=name,qty=1, email=email,productsku=sku)
             create.save()
-        #撈購物車資訊
-        cartQty=0
-        cartPrice=0
-        checkqty=models.Cart.objects.filter(buyername=name)
-
-        if len(checkqty)>0:
-            for x in checkqty:
-
-                cartPrice= x.totalprice  +  cartPrice
-                cartQty=  x.totalqty  +  cartQty
-                
-                productsku=checkqty[0].productsku
-
-                productlistsinfo = products.objects.get(sku=productsku)  
-                firstimage=productlistsinfo.imagelink
-                print(cartQty)
-                print(cartPrice)
-                print(productsku)
-                request.session['cartQty'] = cartQty
-                request.session['cartPrice'] = cartPrice
-                request.session['firstimage'] = firstimage
-                print(firstimage)
+            
              
-        return JsonResponse({'status':'success','message':productlists.name+'已加入購物車','cartQty':cartQty,'cartPrice':cartPrice,'firstimage':firstimage})
-       
-        
+        return JsonResponse({'status':'success','message':productlists.name+'已加入購物車'})
 
         
           
@@ -260,9 +239,9 @@ def removefromcart(request):
    
     checkAccount=models.Account.objects.get(email=email)     
     if sku != None: 
-        Cart.objects.filter(productsku=sku, buyername=name).delete()    
+        Cart.objects.filter(productsku=sku, BuyerName=name).delete()    
         print("資料已刪除")
-    return JsonResponse({'status':'success','message':Cart.productname+'資料已刪除'})
+    return JsonResponse({'status':'success','message':Cart.productName+'資料已刪除'})
 
 @csrf_exempt
 def updatecartqty(request):  
@@ -273,7 +252,7 @@ def updatecartqty(request):
    
     checkAccount=models.Account.objects.get(email=email)     
     if sku != None: 
-        GetCart=Cart.objects.filter(productsku=sku, buyername=name)    
+        GetCart=Cart.objects.filter(productsku=sku, BuyerName=name)    
         GetCart=GetCart.qty+1
         GetCart.save
         print("數量已增加")
@@ -293,43 +272,42 @@ def checkout(request):
     
     for i in range(len(cart)):
         sku=request.POST['sku'+str(i+1)]
-        qty=request.POST['totalqty'+str(i+1)]
-        cartupdate=models.Cart.objects.get(productsku=sku, buyername=name)
-        cartupdate.totalqty=qty
+        qty=request.POST['qty'+str(i+1)]
+        cartupdate=models.Cart.objects.get(productsku=sku, BuyerName=name)
+        cartupdate.qty=qty
         cartupdate.save()
 
     return render(request, 'cart.html', locals())
 
-
+@csrf_exempt
 def loginCheck(request):  
     email=request.POST['email']
     password=request.POST['password']
-
     checkAccount=models.Account.objects.get(email=email) 
 
     cartQty=0
     cartPrice=0
-
+    
+    checkqty=models.Cart.objects.filter(BuyerName=checkAccount.name)
   
-    checkqty=models.Cart.objects.filter(buyername=checkAccount.name)
+    for x in checkqty:
+    
+  
+        cartPrice= x.price  +  cartPrice
+        cartQty=  x.qty  +  cartQty
+        productsku=checkqty[0].productsku
 
-    if len(checkqty)>0:
-        for x in checkqty:
-
-            cartPrice= x.totalprice  +  cartPrice
-            cartQty=  x.totalqty  +  cartQty
-            productsku=checkqty[0].productsku
-
-            productlists = products.objects.get(sku=productsku)  
-            firstimage=productlists.imagelink
-            print(cartQty)
-            print(cartPrice)
-            print(productsku)
-            request.session['cartQty'] = cartQty
-            request.session['cartPrice'] = cartPrice
-            request.session['firstimage'] = firstimage
-            print(firstimage)
-      
+    productlists = products.objects.get(sku=productsku)  
+    firstimage=productlists.image
+    print(cartQty)
+    print(cartPrice)
+    print(productsku)
+    request.session['cartQty'] = cartQty
+    request.session['cartPrice'] = cartPrice
+    request.session['firstimage'] = firstimage
+    print(firstimage)
+       
+   
     try:
         checkAccount=models.Account.objects.get(email=email, password=password)
     
@@ -345,18 +323,11 @@ def loginCheck(request):
        
         return render(request, 'login.html', locals())
 
-
-
-
-   
-    
-
-     
-
+@csrf_exempt
 def logOut(request):  
            
-    request.session['name'] = ""
-    request.session['email'] = ""
+    request.session['name'] = None
+    request.session['email'] = None
     mess = "帳號已經登出!"
     return render(request, 'index.html', locals())
 

@@ -29,7 +29,6 @@ my_patterns = [
 
 
 urlpatterns = [
-    
     path('admin/', admin.site.urls),
     path('index/', homepage),
     path('', homepage),
