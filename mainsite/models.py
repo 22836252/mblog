@@ -44,21 +44,20 @@ class Account(models.Model):
 
 class Cart(models.Model):
    
-    productname = models.CharField(max_length=200)
-    totalprice= models.PositiveIntegerField(default=0)
-    buyername=models.CharField(max_length=200)
-    totalqty = models.PositiveIntegerField(default=0)
+    productName = models.CharField(max_length=200)
+    price= models.PositiveIntegerField(default=0)
+    BuyerName=models.CharField(max_length=200)
+    qty = models.PositiveIntegerField(default=0)
     email= models.CharField(max_length=200, default='')
     order_date = models.DateTimeField(default=timezone.now)
     productsku=models.CharField(max_length=200, default='')
-
     def __str__(self):
-        return self.productname
+        return self.productName
 
 class ShippingDetail(models.Model):
     shippingAddress = models.CharField(max_length=200)
     wayofShipping = models.CharField(max_length=200)
-    buyerName=models.CharField(max_length=200)
+    BuyerName=models.CharField(max_length=200)
     def __str__(self):
         return self.BuyerName
 
