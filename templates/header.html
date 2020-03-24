@@ -8,7 +8,7 @@
               <div class="language">
                 <form action="#" method="post" enctype="multipart/form-data" id="language">
                   <div class="btn-group">
-                    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <img src="/static/image/flags/gb.png" alt="English" title="English">English <i class="fa fa-caret-down"></i></button>
+                    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <img src="{{firstimage}}" id="firstimage" alt="English" title="English">English <i class="fa fa-caret-down"></i></button>
                     <ul class="dropdown-menu">
                       <li><a href="#"><img src="/static/image/flags/lb.png" alt="Arabic" title="Arabic"> Arabic</a></li>
                       <li><a href="#"><img src="/static/image/flags/gb.png" alt="English" title="English"> English</a></li>
@@ -86,7 +86,7 @@
                 <table class="table table-striped">
                   <tbody>
                     <tr>
-                      <td class="text-center"><a href="#"><img class="img-thumbnail"  title="" alt="firstimage"height="10px" width="10px"  src="/static/image/product/{{firstimage}}.jpg"  width="5px"></a></td>
+                      <td class="text-center"><a href="https://{{firstimage}}"><img class="img-thumbnail"  title="" alt="firstimage" style='width:50px'  src="https://{{firstimage}}"  ></a></td>
                       <td class="text-left"><a href="#">購物車</a></td>
                       <td class="text-right">數量:{{cartQty}}件</td>
                       <td class="text-right">價格:{{cartPrice}}元</td>
