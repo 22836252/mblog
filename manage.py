@@ -6,7 +6,7 @@ import sys
 
 def main():
 
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mblog.herokusettings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mblog.settings')
     
    
     #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mblog.settings')
