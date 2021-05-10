@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from .models import products
 from .models import Account
-from .models import Cart
+# from .models import Cart
 from django.db.models import Q
 from django.http import Http404
 import random

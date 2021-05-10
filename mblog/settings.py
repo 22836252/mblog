@@ -1,9 +1,12 @@
 import os
-import django_heroku
-import dj_database_url
+from pathlib import Path
+# import django_heroku
+# import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainsite',
-    'markdown_deux',
+    # 'markdown_deux',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +66,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mblog.wsgi.application'
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myshop',     #建立的資料庫
+        'USER': 'root',     #mysql使用者名稱
+        'PASSWORD': 'ken99899',     #mysql密碼
+        'HOST':'127.0.0.1',     #IP
+        'PORT':'3306',     #埠號        
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -124,14 +142,14 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 
-MARKDOWN_DEUX_STYLES = {
-    "default": {
-        "extras": {
-        "code-friendly": None,
-    },
-        "safe_mode": False,
-    },
-}
+# MARKDOWN_DEUX_STYLES = {
+#     "default": {
+#         "extras": {
+#         "code-friendly": None,
+#     },
+#         "safe_mode": False,
+#     },
+# }
 
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
@@ -145,8 +163,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = False
 # APPEND_SLASH = False
 
+# django_heroku.settings(locals())
 
-django_heroku.settings(locals())
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)

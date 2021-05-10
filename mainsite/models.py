@@ -7,12 +7,12 @@ class products(models.Model):
     sku=models.CharField(max_length=200, default='A0001')
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200)
-    type =  models.CharField(max_length=200, default='其他')
+    # type =  models.CharField(max_length=200, default='其他')
     body = models.TextField()
     brand = models.CharField(max_length=200, default='自有品牌')
-    images= models.CharField(max_length=200 , default='')
-    image1= models.CharField(max_length=200 , default='')
-    image2= models.CharField(max_length=200 , default='')
+    # images= models.CharField(max_length=200 , default='')
+    # image1= models.CharField(max_length=200 , default='')
+    # image2= models.CharField(max_length=200 , default='')
     pub_date = models.DateTimeField(default=timezone.now)
     pid= models.PositiveIntegerField(default=0)
     qty = models.PositiveIntegerField(default=0)
@@ -21,12 +21,12 @@ class products(models.Model):
     href=models.CharField(max_length=200 , default='nourl')
     imagelink=models.CharField(max_length=200 , default='nourl')
 
-    SIZES = (
-        ('S', 'Small'),
-        ('M', 'Medium'),
-        ('L', 'Large'),
-        )
-    size = models.CharField(max_length=1, default='',choices=SIZES)
+    # SIZES = (
+    #     ('S', 'Small'),
+    #     ('M', 'Medium'),
+    #     ('L', 'Large'),
+    #     )
+    # size = models.CharField(max_length=1, default='',choices=SIZES)
     class Meta:
         ordering = ('-pub_date',)
 
